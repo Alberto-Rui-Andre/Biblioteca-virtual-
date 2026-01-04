@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Acervo Completo</title>
+    
+    <!-- Bootstrap e Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <style>
+        /* VARIÁVEIS DE CORES */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-primary-dark: #1B5E20;
+            --color-shelf: #8B4513;
+        }
+
+        /* BACKGROUND BRANCO PURO */
+        body {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER FIXO - COM NAVBAR (ESTERILIZADO) */
+        .main-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        /* NAVBAR ESTERILIZADA */
+        .navbar-custom {
+            background: transparent !important;
+            padding: 0.5rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 5px;
+            background-color: white;
+            padding: 2px;
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.2;
+        }
+
+        /* LINKS DA NAVBAR */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            margin: 0 0.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link i {
+            font-size: 0.9rem;
+        }
+
+        /* DROPDOWN DO USUÁRIO */
+        .dropdown-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white !important;
+            padding: 0.4rem 0.8rem !important;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dropdown-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown-menu {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-item i {
+            width: 1rem;
+            text-align: center;
+        }
+
+        /* CONTEÚDO PRINCIPAL COMPACTADO */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: var(--color-white);
+        }
+
+        /* CABEÇALHO COMPACTADO */
+        .acervo-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: white;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .acervo-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .acervo-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ESTATÍSTICAS COMPACTADAS - UMA LINHA */
+        .stats-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+            background: var(--color-white);
+            padding: 0.75rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* CONTROLES COMPACTADOS */
+        .acervo-controls {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .view-controls .btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        /* BARRA DE BUSCA COMPACTADA */
+        .search-section {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .search-section .input-group {
+            height: 40px;
+        }
+
+        .search-section .form-control {
+            font-size: 0.85rem;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .search-section .btn {
+            padding: 0.375rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* FILTROS COMPACTADOS */
+        .filters-section {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: none;
+            border: 1px solid var(--color-border);
+        }
+
+        .filters-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filters-section h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .filters-section .form-label {
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .filters-section .form-select {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            height: 35px;
+        }
+
+        .filters-section .btn {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* PRATELEIRA COMPACTADA - 3 LIVROS POR LINHA */
+        .shelf-container {
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .shelf {
+            background: linear-gradient(to bottom, 
+                var(--color-shelf) 0%, 
+                #A0522D 30%, 
+                var(--color-shelf) 100%);
+            height: 15px;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        /* CORREÇÃO: SEMPRE 3 LIVROS POR LINHA EM TODOS OS DISPOSITIVOS */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* SEMPRE 3 colunas */
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* LIVRO COMPACTADO - IGUAL AO INDEX.HTML */
+        .book-item {
+            perspective: 800px;
+            height: 180px; /* TAMANHO IGUAL AO INDEX.HTML */
+            cursor: pointer;
+        }
+
+        .book-cover {
+            position: relative;
+            width: 100%;
+            height: 140px; /* TAMANHO IGUAL AO INDEX.HTML */
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+
+        .book-item:hover .book-cover {
+            transform: rotateY(-15deg) translateX(-5px);
+        }
+
+        .book-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 3px 6px 6px 3px;
+            box-shadow: 
+                3px 3px 8px rgba(0,0,0,0.2),
+                inset 1px 0 0 rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 0.5rem; /* REDUZIDO COMO NO INDEX */
+            overflow: hidden;
+        }
+
+        .book-icon {
+            font-size: 1.5rem; /* TAMANHO IGUAL AO INDEX.HTML */
+            margin-bottom: 0.3rem; /* REDUZIDO COMO NO INDEX */
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+        }
+
+        .book-title {
+            font-size: 0.7rem; /* TAMANHO IGUAL AO INDEX.HTML */
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 0.2rem; /* REDUZIDO COMO NO INDEX */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 0.6rem; /* TAMANHO IGUAL AO INDEX.HTML */
+            opacity: 0.9;
+            text-align: center;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.3rem; /* REDUZIDO COMO NO INDEX */
+            background: rgba(0,0,0,0.6);
+            border-radius: 0 0 3px 3px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 0.2rem; /* REDUZIDO COMO NO INDEX */
+        }
+
+        .book-item:hover .book-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-actions .btn {
+            padding: 0.15rem 0.25rem; /* REDUZIDO COMO NO INDEX */
+            font-size: 0.6rem; /* REDUZIDO COMO NO INDEX */
+            flex: 1;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 3px; /* REDUZIDO COMO NO INDEX */
+            right: 3px; /* REDUZIDO COMO NO INDEX */
+            background: linear-gradient(135deg, var(--color-warning), #e67e22);
+            color: white;
+            padding: 1px 4px; /* REDUZIDO COMO NO INDEX */
+            border-radius: 8px; /* REDUZIDO COMO NO INDEX */
+            font-size: 0.5rem; /* REDUZIDO COMO NO INDEX */
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .book-category {
+            margin-top: 0.15rem; /* REDUZIDO COMO NO INDEX */
+            text-align: center;
+        }
+
+        .book-category .badge {
+            font-size: 0.55rem; /* REDUZIDO COMO NO INDEX */
+            padding: 0.15rem 0.3rem; /* REDUZIDO COMO NO INDEX */
+            background: var(--color-secondary);
+            color: var(--color-text-main);
+        }
+
+        /* LISTA DE LIVROS COMPACTADA */
+        .list-group-item {
+            padding: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .list-group-item h6 {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .list-group-item .text-muted {
+            font-size: 0.75rem;
+        }
+
+        /* PAGINAÇÃO COMPACTADA */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination-btn {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-main);
+            min-width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn.active-page {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+            cursor: default;
+        }
+
+        .page-info {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            background: var(--color-white);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+        }
+
+        /* MODAL COMPACTADO - MANTIDO COMO ESTAVA */
+        .modal-header {
+            padding: 0.75rem 1rem;
+        }
+
+        .modal-body {
+            padding: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1rem;
+        }
+
+        .modal-body p {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body .btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* FOOTER COMPACTADO */
+        .footer-main {
+            background: var(--color-primary-dark);
+            color: white;
+            margin-top: auto;
+            padding: 1rem 0 !important;
+            font-size: 0.85rem;
+        }
+        
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD54F;
+        }
+
+        /* ANIMAÇÕES SUAVES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .book-item {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* RESPONSIVIDADE - 3 LIVROS POR LINHA SEMPRE */
+        @media (max-width: 768px) {
+            .main-header {
+                position: sticky;
+            }
+            
+            .acervo-title {
+                font-size: 1.3rem;
+            }
+            
+            .stats-row {
+                gap: 0.5rem;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+                padding: 0.5rem;
+            }
+            
+            .stat-icon {
+                font-size: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+            
+            /* MANTÉM 3 COLUNAS NO MOBILE - APENAS REDUZ O ESPAÇO */
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr); /* SEMPRE 3 colunas */
+                gap: 0.5rem; /* Espaço reduzido */
+            }
+            
+            /* LIVROS AINDA MAIS COMPACTOS PARA CABEREM 3 POR LINHA */
+            .book-item {
+                height: 160px; /* AINDA MENOR */
+            }
+            
+            .book-cover {
+                height: 125px; /* AINDA MENOR */
+            }
+            
+            .book-icon {
+                font-size: 1.3rem;
+            }
+            
+            .book-title {
+                font-size: 0.65rem;
+                height: 1.6rem;
+            }
+            
+            .book-author {
+                font-size: 0.55rem;
+                height: 1.4rem;
+            }
+            
+            .search-section .input-group {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .search-section .form-control {
+                margin-bottom: 0.5rem;
+                border-radius: 6px !important;
+            }
+            
+            .search-section .btn {
+                width: 100%;
+                border-radius: 6px;
+            }
+        }
+
+        /* Em telas extremamente pequenas, forçar scroll horizontal */
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr); /* SEMPRE 3 colunas */
+                gap: 0.3rem; /* Espaço mínimo */
+                overflow-x: auto; /* Permite scroll se necessário */
+                padding-bottom: 0.5rem;
+            }
+            
+            .book-item {
+                min-width: 90px; /* Largura mínima */
+            }
+            
+            .stats-row {
+                flex-wrap: wrap;
+            }
+            
+            .stat-item {
+                min-width: calc(50% - 0.5rem);
+            }
+            
+            .pagination-container {
+                gap: 0.25rem;
+            }
+            
+            .pagination-btn {
+                min-width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+            }
+            
+            .page-info {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+        }
+
+        /* NAVBAR RESPONSIVA ADICIONAL */
+        @media (max-width: 380px) {
+            .navbar-nav .nav-link span:not(.fa) {
+                display: none;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.5rem;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+            
+            .dropdown-toggle span {
+                display: none;
+            }
+            
+            .dropdown-toggle {
+                padding: 0.5rem !important;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER COM NAVBAR (ESTERILIZADO) -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="user.html">
+                    <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+                    <div class="logo-text">
+                        <div class="logo-title">ISPP-LUENA</div>
+                        <div class="logo-subtitle">Biblioteca Virtual</div>
+                    </div>
+                </a>
+                
+                <!-- BOTÃO TOGGLER PARA MOBILE -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- MENU -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="user.html">
+                                <i class="fas fa-home"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="acervo.html">
+                                <i class="fas fa-book-reader"></i> <span>Acervo</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarMeusDownloads()">
+                                <i class="fas fa-download"></i> <span>Meus Downloads</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarFavoritos()">
+                                <i class="fas fa-heart"></i> <span>Favoritos</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- USUÁRIO -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> <span id="user-name">Estudante</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#" onclick="mostrarSobre()">
+                                    <i class="fas fa-info-circle"></i> Sobre o Sistema
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="mostrarContato()">
+                                    <i class="fas fa-headset"></i> Contato/Suporte
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i> Sair
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="acervo-header">
+            <h1 class="acervo-title">Acervo Completo</h1>
+            <p class="acervo-subtitle">
+                Explore nossa coleção completa de livros acadêmicos. Tudo organizado em prateleiras virtuais.
+            </p>
+        </section>
+
+        <!-- ESTATÍSTICAS EM UMA LINHA - COM DADOS REAIS -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-number" id="total-livros">0</div>
+                <div class="stat-label">Livros</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div class="stat-number" id="total-autores">0</div>
+                <div class="stat-label">Autores</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <div class="stat-number" id="total-categorias">0</div>
+                <div class="stat-label">Categorias</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="stat-number" id="total-downloads">0</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+        </div>
+
+        <!-- CONTROLES COMPACTADOS -->
+        <div class="acervo-controls">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="view-controls d-flex align-items-center flex-wrap gap-2">
+                        <span class="fw-bold small">Visualização:</span>
+                        <button class="btn btn-outline-primary btn-sm active" onclick="mudarVisualizacao('prateleira')">
+                            <i class="fas fa-th-large me-1"></i> Prateleira
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="mudarVisualizacao('lista')">
+                            <i class="fas fa-list me-1"></i> Lista
+                        </button>
+                        <span class="ms-2 text-muted small">
+                            <span id="livros-visiveis">0</span> de 
+                            <span id="livros-totais">0</span> livros
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                    <button class="btn btn-outline-primary btn-sm" onclick="toggleFiltros()">
+                        <i class="fas fa-filter me-1"></i> Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUSCA COMPACTADA -->
+        <section class="search-section">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search-input" 
+                       placeholder="Buscar livros...">
+                <button class="btn btn-primary" type="button" onclick="realizarBusca()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- FILTROS COMPACTADOS -->
+        <section class="filters-section" id="filters-section">
+            <h4><i class="fas fa-filter me-2"></i>Filtros</h4>
+            <div class="row g-2 mb-3">
+                <div class="col-md-4">
+                    <label class="form-label small">Categoria</label>
+                    <select class="form-select" id="filtro-categoria">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small">Autor</label>
+                    <select class="form-select" id="filtro-autor">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small">Ordenar</label>
+                    <select class="form-select" id="filtro-ordenacao">
+                        <option value="recentes">Mais recentes</option>
+                        <option value="antigos">Mais antigos</option>
+                        <option value="titulo-asc">Título (A-Z)</option>
+                        <option value="titulo-desc">Título (Z-A)</option>
+                        <option value="mais-baixados">Mais baixados</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-outline-secondary btn-sm" onclick="limparFiltros()">
+                    <i class="fas fa-times me-1"></i> Limpar
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="aplicarFiltros()">
+                    <i class="fas fa-check me-1"></i> Aplicar
+                </button>
+            </div>
+        </section>
+
+        <!-- PRATELEIRA - 3 LIVROS POR LINHA -->
+        <div class="shelf-container" id="prateleira-container">
+            <div class="shelf"></div>
+            <div class="books-grid" id="livros-container">
+                <div class="text-center py-4 w-100">
+                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="small text-muted">Carregando acervo...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTA (alternativa) -->
+        <div class="livros-list-container d-none" id="lista-container">
+            <div class="list-group" id="livros-lista"></div>
+        </div>
+
+        <!-- PAGINAÇÃO -->
+        <div class="pagination-container" id="paginacao"></div>
+
+    </main>
+
+    <!-- FOOTER COMPACTADO -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <img src="/img/descarregar.png" alt="ISPP Luena" class="footer-logo">
+                <div class="mb-1">ISPP-LUENA - Biblioteca Virtual</div>
+                <div class="footer-links">
+                    <a href="#" onclick="mostrarSobre()">Sobre</a>
+                    <a href="acervo.html">Acervo</a>
+                    <a href="#" onclick="mostrarContato()">Contato</a>
+                    <a href="#" onclick="mostrarPolitica()">Política de Uso</a>
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-envelope me-1"></i>suporte@bibliotecavirtual.com
+                    <span class="mx-2">|</span>
+                    <i class="fas fa-phone me-1"></i>(11) 9999-8888
+                </div>
+                <div class="mt-2">
+                    &copy; <span id="current-year"></span> ISPP-LUENA
+                    <br>
+                    <small class="opacity-75">Sistema de Gestão Acadêmica</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL COMPACTADO - MANTIDO COMO ESTAVA -->
+    <div class="modal fade" id="livroModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white py-2">
+                    <h5 class="modal-title fs-6" id="modalLivroTitulo"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="bg-primary text-white rounded p-3 text-center mb-2">
+                                <i class="fas fa-book fa-2x"></i>
+                            </div>
+                            <div class="d-grid gap-1">
+                                <button class="btn btn-sm btn-success" onclick="downloadLivroModal()">
+                                    <i class="fas fa-download me-1"></i>Baixar
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="adicionarFavoritoModal()">
+                                    <i class="fas fa-heart me-1"></i>Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Autor:</strong></p>
+                                <p class="small mb-2" id="modalLivroAutor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Categoria:</strong></p>
+                                <p class="small mb-2" id="modalLivroCategoria"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Professor:</strong></p>
+                                <p class="small mb-2" id="modalLivroProfessor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Adicionado:</strong></p>
+                                <p class="small mb-2" id="modalLivroData"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Downloads:</strong></p>
+                                <p class="small mb-0" id="modalLivroDownloads"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="mb-1 small"><strong>Descrição:</strong></p>
+                        <p class="small text-muted mb-0" id="modalLivroDescricao"></p>
+                    </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
+    <script>
+        // CONFIGURAÇÃO INICIAL
+        alertify.defaults.glossary.title = 'Biblioteca';
+        alertify.defaults.notifier.position = 'top-right';
+        alertify.defaults.transition = 'fade';
+
+        // VARIÁVEIS GLOBAIS
+        let todosLivros = [];
+        let livrosFiltrados = [];
+        let meusDownloads = JSON.parse(localStorage.getItem('meusDownloads')) || [];
+        let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+        let visualizacaoAtual = 'prateleira';
+        let paginaAtual = 1;
+        const livrosPorPagina = 12; // 4 linhas de 3 livros = 12 por página
+        let livroModalAtual = null;
+
+        // Ano atual no footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // FUNÇÃO DE SANITIZAÇÃO
+        function sanitizeHTML(str) {
+            if (typeof str !== 'string') return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // CARREGAR INFORMAÇÕES DO USUÁRIO
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/user-info');
+                if (response.ok) {
+                    const userData = await response.json();
+                    
+                    // Exibir na navbar
+                    document.getElementById('user-name').textContent = sanitizeHTML(userData.nome || "Estudante");
+                } else {
+                    document.getElementById('user-name').textContent = "Visitante";
+                }
+            } catch (error) {
+                console.error('Erro ao carregar informações do usuário:', error);
+                document.getElementById('user-name').textContent = "Visitante";
+            }
+        }
+
+        // CARREGAR ESTATÍSTICAS REAIS DO APP.JS
+        async function carregarEstatisticasReais() {
+            try {
+                const response = await fetch('/api/estatisticas-gerais');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('total-livros').textContent = stats.totalLivros || 0;
+                    document.getElementById('total-autores').textContent = stats.totalAutores || 0;
+                    document.getElementById('total-categorias').textContent = stats.totalCategorias || 0;
+                    
+                    // Calcular downloads totais
+                    const totalDownloads = todosLivros.reduce((total, livro) => total + (livro.downloads || 0), 0);
+                    document.getElementById('total-downloads').textContent = totalDownloads.toLocaleString();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        // CARREGAR LIVROS
+        async function carregarLivros() {
+            const container = document.getElementById('livros-container');
+            container.innerHTML = `
+                <div class="text-center py-4 w-100">
+                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="small text-muted">Carregando acervo completo...</p>
+                </div>
+            `;
+            
+            try {
+                const response = await fetch('/api/livros');
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar os livros: ' + response.statusText);
+                }
+                const data = await response.json();
+
+                todosLivros = data; 
+                livrosFiltrados = [...todosLivros];
+
+                // Carregar estatísticas reais
+                await carregarEstatisticasReais();
+                
+                atualizarFiltros();
+                exibirLivros();
+                
+            } catch (error) {
+                console.error('Erro ao carregar os livros:', error);
+                container.innerHTML = `
+                    <div class="text-center p-4" style="grid-column: 1 / -1;">
+                        <i class="fas fa-exclamation-triangle text-warning mb-2"></i>
+                        <p class="text-warning small mb-2">Erro ao carregar acervo</p>
+                        <p class="text-muted small mb-3">Não foi possível carregar os livros. Tente recarregar a página.</p>
+                        <button class="btn btn-sm btn-primary" onclick="carregarLivros()">
+                            <i class="fas fa-redo me-1"></i>Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // ATUALIZAR FILTROS
+        function atualizarFiltros() {
+            const categorias = [...new Set(todosLivros.map(l => l.categoria_nome).filter(Boolean).sort())];
+            const autores = [...new Set(todosLivros.map(l => l.autor_nome).filter(Boolean).sort())];
+
+            const categoriaSelect = document.getElementById('filtro-categoria');
+            const autorSelect = document.getElementById('filtro-autor');
+
+            // Limpar e adicionar categorias
+            categoriaSelect.innerHTML = '<option value="">Todas as categorias</option>';
+            categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = sanitizeHTML(cat);
+                categoriaSelect.appendChild(option);
+            });
+
+            // Limpar e adicionar autores
+            autorSelect.innerHTML = '<option value="">Todos os autores</option>';
+            autores.forEach(autor => {
+                const option = document.createElement('option');
+                option.value = autor;
+                option.textContent = sanitizeHTML(autor);
+                autorSelect.appendChild(option);
+            });
+        }
+
+        // TEMPLATE PARA LIVRO NA PRATELEIRA - IGUAL AO INDEX.HTML
+        function templateLivroPrateleira(livro) {
+            const titulo = sanitizeHTML(livro.titulo);
+            const autor = sanitizeHTML(livro.autor_nome || 'Autor não informado');
+            const categoria = sanitizeHTML(livro.categoria_nome);
+            const arquivo_pdf = livro.arquivo_pdf ? encodeURIComponent(livro.arquivo_pdf) : '#';
+            
+            const cores = [
+                'linear-gradient(135deg, #2E7D32, #4CAF50)',   // Verde
+                'linear-gradient(135deg, #1565C0, #1976D2)',   // Azul
+                'linear-gradient(135deg, #6A1B9A, #8E24AA)',   // Roxo
+                'linear-gradient(135deg, #C62828, #D32F2F)',   // Vermelho
+                'linear-gradient(135deg, #FF9800, #FF5722)',   // Laranja
+                'linear-gradient(135deg, #0097A7, #00BCD4)'    // Ciano
+            ];
+            const corIndex = livro.id % cores.length;
+            
+            return `
+                <div class="book-item" data-id="${livro.id}">
+                    ${livro.destaque ? '<span class="book-badge"><i class="fas fa-star"></i> Destaque</span>' : ''}
+                    <div class="book-cover">
+                        <div class="book-front" style="background: ${cores[corIndex]}">
+                            <i class="fas fa-book book-icon"></i>
+                            <div class="book-title">${titulo}</div>
+                            <div class="book-author">${autor}</div>
+                        </div>
+                    </div>
+                    <div class="book-actions">
+                        <a href="/uploads/pdfs/${arquivo_pdf}" class="btn btn-sm btn-success" download 
+                           onclick="registrarDownload(${livro.id}, '${titulo.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button class="btn btn-sm btn-primary" onclick="mostrarDetalhesLivro(${livro.id})">
+                            <i class="fas fa-info"></i>
+                        </button>
+                    </div>
+                    <div class="book-category">
+                        <span class="badge">${categoria || 'Sem categoria'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // TEMPLATE PARA LIVRO EM LISTA
+        function templateLivroLista(livro) {
+            const titulo = sanitizeHTML(livro.titulo);
+            const autor = sanitizeHTML(livro.autor_nome || 'Autor não informado');
+            const categoria = sanitizeHTML(livro.categoria_nome || 'Sem categoria');
+            const arquivo_pdf = livro.arquivo_pdf ? encodeURIComponent(livro.arquivo_pdf) : '#';
+            
+            return `
+                <div class="list-group-item" data-id="${livro.id}">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h6 class="mb-1 fw-bold">${titulo}</h6>
+                            <p class="mb-1 small text-muted"><i class="fas fa-user-edit me-1"></i>${autor}</p>
+                            <span class="badge bg-light text-dark small">${categoria}</span>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a href="/uploads/pdfs/${arquivo_pdf}" class="btn btn-success" download 
+                                   onclick="registrarDownload(${livro.id}, '${titulo.replace(/'/g, "\\'")}')">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <button class="btn btn-primary" onclick="mostrarDetalhesLivro(${livro.id})">
+                                    <i class="fas fa-info"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // EXIBIR LIVROS
+        function exibirLivros() {
+            const container = document.getElementById('livros-container');
+            const listaContainer = document.getElementById('livros-lista');
+            const infoVisiveis = document.getElementById('livros-visiveis');
+            const infoTotais = document.getElementById('livros-totais');
+
+            if (livrosFiltrados.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-4" style="grid-column: 1 / -1;">
+                        <i class="fas fa-book mb-3 text-muted"></i>
+                        <p class="text-muted small mb-2">Nenhum livro encontrado</p>
+                        <p class="text-muted small mb-3">Tente alterar os termos da busca ou os filtros aplicados.</p>
+                        <button class="btn btn-sm btn-primary" onclick="limparFiltros()">
+                            <i class="fas fa-times me-1"></i>Limpar Filtros
+                        </button>
+                    </div>
+                `;
+                infoVisiveis.textContent = 0;
+                infoTotais.textContent = todosLivros.length;
+                renderizarPaginacao();
+                return;
+            }
+
+            const totalPaginas = Math.ceil(livrosFiltrados.length / livrosPorPagina);
+            if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+            
+            const inicio = (paginaAtual - 1) * livrosPorPagina;
+            const fim = inicio + livrosPorPagina;
+            const livrosPagina = livrosFiltrados.slice(inicio, fim);
+
+            if (visualizacaoAtual === 'prateleira') {
+                container.innerHTML = livrosPagina.map(livro => templateLivroPrateleira(livro)).join('');
+                document.getElementById('prateleira-container').classList.remove('d-none');
+                document.getElementById('lista-container').classList.add('d-none');
+            } else {
+                listaContainer.innerHTML = livrosPagina.map(livro => templateLivroLista(livro)).join('');
+                document.getElementById('prateleira-container').classList.add('d-none');
+                document.getElementById('lista-container').classList.remove('d-none');
+            }
+            
+            infoVisiveis.textContent = livrosPagina.length;
+            infoTotais.textContent = livrosFiltrados.length;
+            
+            renderizarPaginacao();
+        }
+
+        // RENDERIZAR PAGINAÇÃO
+        function renderizarPaginacao() {
+            const paginacao = document.getElementById('paginacao');
+            const totalPaginas = Math.ceil(livrosFiltrados.length / livrosPorPagina);
+
+            if (totalPaginas <= 1) {
+                paginacao.innerHTML = '';
+                return;
+            }
+
+            let paginacaoHTML = `
+                <button class="pagination-btn" ${paginaAtual === 1 ? 'disabled' : ''} onclick="mudarPagina(${paginaAtual - 1})">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+
+            let inicioPagina = Math.max(1, paginaAtual - 1);
+            let fimPagina = Math.min(totalPaginas, paginaAtual + 1);
+
+            for (let i = inicioPagina; i <= fimPagina; i++) {
+                paginacaoHTML += `
+                    <button class="pagination-btn ${i === paginaAtual ? 'active-page' : ''}" onclick="mudarPagina(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            paginacaoHTML += `
+                <button class="pagination-btn" ${paginaAtual === totalPaginas ? 'disabled' : ''} onclick="mudarPagina(${paginaAtual + 1})">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <span class="page-info">
+                    ${paginaAtual}/${totalPaginas}
+                </span>
+            `;
+
+            paginacao.innerHTML = paginacaoHTML;
+        }
+
+        // FUNÇÕES DE CONTROLE
+        function mudarPagina(pagina) {
+            const totalPaginas = Math.ceil(livrosFiltrados.length / livrosPorPagina);
+            if (pagina < 1 || pagina > totalPaginas) return;
+            paginaAtual = pagina;
+            exibirLivros();
+            window.scrollTo({ top: document.getElementById('livros-container').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function mudarVisualizacao(tipo) {
+            visualizacaoAtual = tipo;
+            document.querySelectorAll('.view-controls .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            paginaAtual = 1;
+            exibirLivros();
+        }
+
+        function toggleFiltros() {
+            const filtersSection = document.getElementById('filters-section');
+            filtersSection.classList.toggle('active');
+        }
+
+        // APLICAR FILTROS
+        function aplicarFiltros() {
+            const categoria = document.getElementById('filtro-categoria').value;
+            const autor = document.getElementById('filtro-autor').value;
+            const ordenacao = document.getElementById('filtro-ordenacao').value;
+            const busca = document.getElementById('search-input').value.toLowerCase().trim();
+
+            livrosFiltrados = todosLivros.filter(livro => {
+                if (categoria && livro.categoria_nome !== categoria) return false;
+                if (autor && livro.autor_nome !== autor) return false;
+
+                if (busca) {
+                    const buscaMatch = 
+                        (livro.titulo && livro.titulo.toLowerCase().includes(busca)) || 
+                        (livro.autor_nome && livro.autor_nome.toLowerCase().includes(busca)) ||
+                        (livro.categoria_nome && livro.categoria_nome.toLowerCase().includes(busca)) ||
+                        (livro.professor_nome && livro.professor_nome.toLowerCase().includes(busca)) ||
+                        (livro.descricao && livro.descricao.toLowerCase().includes(busca));
+                    if (!buscaMatch) return false;
+                }
+
+                return true;
+            });
+
+            // Aplicar ordenação
+            switch (ordenacao) {
+                case 'recentes':
+                    livrosFiltrados.sort((a, b) => new Date(b.criado_em) - new Date(a.criado_em));
+                    break;
+                case 'antigos':
+                    livrosFiltrados.sort((a, b) => new Date(a.criado_em) - new Date(b.criado_em));
+                    break;
+                case 'titulo-asc':
+                    livrosFiltrados.sort((a, b) => a.titulo.localeCompare(b.titulo));
+                    break;
+                case 'titulo-desc':
+                    livrosFiltrados.sort((a, b) => b.titulo.localeCompare(a.titulo));
+                    break;
+                case 'mais-baixados':
+                    livrosFiltrados.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+                    break;
+            }
+
+            paginaAtual = 1;
+            exibirLivros();
+            
+            if (livrosFiltrados.length > 0) {
+                alertify.success(`${livrosFiltrados.length} resultados encontrados.`);
+            } else {
+                alertify.message('Nenhum resultado encontrado');
+            }
+        }
+
+        function limparFiltros() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filtro-categoria').value = '';
+            document.getElementById('filtro-autor').value = '';
+            document.getElementById('filtro-ordenacao').value = 'recentes';
+            aplicarFiltros();
+            alertify.message('Filtros limpos.');
+        }
+
+        function realizarBusca() {
+            aplicarFiltros();
+        }
+
+        // MOSTRAR DETALHES DO LIVRO
+        async function mostrarDetalhesLivro(livroId) {
+            try {
+                const livro = todosLivros.find(l => l.id === livroId);
+                if (!livro) {
+                    throw new Error('Livro não encontrado localmente.');
+                }
+                
+                livroModalAtual = livro;
+                
+                const modal = new bootstrap.Modal(document.getElementById('livroModal'));
+                document.getElementById('modalLivroTitulo').textContent = sanitizeHTML(livro.titulo);
+                document.getElementById('modalLivroAutor').textContent = sanitizeHTML(livro.autor_nome || 'Não informado');
+                document.getElementById('modalLivroProfessor').textContent = sanitizeHTML(livro.professor_nome || 'Não informado');
+                document.getElementById('modalLivroCategoria').textContent = sanitizeHTML(livro.categoria_nome || 'Não informada');
+                document.getElementById('modalLivroData').textContent = new Date(livro.criado_em).toLocaleDateString('pt-BR');
+                document.getElementById('modalLivroDownloads').textContent = (livro.downloads || 0).toLocaleString();
+                document.getElementById('modalLivroDescricao').textContent = sanitizeHTML(livro.descricao || 'Nenhuma descrição detalhada disponível.');
+                
+                modal.show();
+                
+            } catch (error) {
+                console.error('Erro ao mostrar detalhes do livro:', error);
+                alertify.error('Não foi possível carregar os detalhes do livro');
+            }
+        }
+
+        function downloadLivroModal() {
+            if (livroModalAtual) {
+                registrarDownload(livroModalAtual.id, livroModalAtual.titulo);
+                window.open(`/uploads/pdfs/${encodeURIComponent(livroModalAtual.arquivo_pdf)}`, '_blank');
+                bootstrap.Modal.getInstance(document.getElementById('livroModal')).hide();
+            }
+        }
+
+        function adicionarFavoritoModal() {
+            if (livroModalAtual) {
+                const titulo = sanitizeHTML(livroModalAtual.titulo);
+                
+                if (!favoritos.find(f => f.id === livroModalAtual.id)) {
+                    favoritos.push({
+                        id: livroModalAtual.id,
+                        titulo: titulo,
+                        autor: sanitizeHTML(livroModalAtual.autor_nome),
+                        categoria: sanitizeHTML(livroModalAtual.categoria_nome),
+                        data: new Date().toLocaleDateString('pt-BR')
+                    });
+                    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+                    alertify.success(`"${titulo}" adicionado aos favoritos`);
+                    
+                    bootstrap.Modal.getInstance(document.getElementById('livroModal')).hide();
+                } else {
+                    alertify.message('Livro já está nos favoritos');
+                }
+            }
+        }
+
+        // REGISTRAR DOWNLOAD
+        async function registrarDownload(livroId, titulo) {
+            try {
+                // Enviar registro de download para o servidor
+                await fetch(`/api/livros/downloads/${livroId}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' } 
+                });
+
+                // Adicionar aos downloads locais
+                const novoDownload = {
+                    id: livroId,
+                    titulo: titulo,
+                    data: new Date().toLocaleString('pt-BR'),
+                    timestamp: Date.now()
+                };
+                meusDownloads.unshift(novoDownload);
+                localStorage.setItem('meusDownloads', JSON.stringify(meusDownloads.slice(0, 50)));
+
+                // Atualizar contador local
+                const livroIndex = todosLivros.findIndex(l => l.id === livroId);
+                if (livroIndex !== -1) {
+                    todosLivros[livroIndex].downloads = (todosLivros[livroIndex].downloads || 0) + 1;
+                    
+                    // Atualizar estatísticas de downloads
+                    const totalDownloads = todosLivros.reduce((total, livro) => total + (livro.downloads || 0), 0);
+                    document.getElementById('total-downloads').textContent = totalDownloads.toLocaleString();
+                }
+
+                alertify.success(`Download iniciado: ${sanitizeHTML(titulo)}`);
+            } catch (error) {
+                console.error('Erro ao registrar download:', error);
+                alertify.error('Erro ao registrar download, mas o arquivo será baixado');
+            }
+        }
+
+        // FUNÇÃO DE LOGOUT
+        async function logout() {
+            alertify.confirm('Confirmação de Saída', 'Tem certeza de que deseja sair da sua conta?', 
+                async function() {
+                    try {
+                        // Chamar a rota de logout no servidor
+                        const response = await fetch('/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            // Limpar dados locais
+                            localStorage.removeItem('meusDownloads');
+                            localStorage.removeItem('favoritos');
+                            
+                            // Redirecionar para a página inicial
+                            alertify.success('Saída realizada com sucesso!');
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 1000);
+                        } else {
+                            alertify.error('Erro ao fazer logout. Tente novamente.');
+                        }
+                    } catch (error) {
+                        console.error('Erro no logout:', error);
+                        alertify.error('Erro ao fazer logout. Tente novamente.');
+                    }
+                }, 
+                function() {
+                    alertify.message('Saída cancelada');
+                }
+            );
+        }
+
+        // FUNÇÕES AUXILIARES
+        function mostrarMeusDownloads() {
+            const downloadsHTML = meusDownloads.length > 0
+                ? meusDownloads.map(d => `
+                    <div class="border-bottom pb-1 mb-1">
+                        <strong class="small">${sanitizeHTML(d.titulo)}</strong>
+                        <br>
+                        <small class="text-muted">Baixado em: ${sanitizeHTML(d.data)}</small>
+                    </div>
+                `).join('')
+                : '<p class="text-center text-muted small">Você ainda não registrou nenhum download.</p>';
+
+            alertify.alert('Meus Últimos Downloads', downloadsHTML);
+        }
+
+        function mostrarFavoritos() {
+            const favoritosHTML = favoritos.length > 0
+                ? favoritos.map(f => `
+                    <div class="border-bottom pb-1 mb-1">
+                        <strong class="small">${sanitizeHTML(f.titulo)}</strong>
+                        <br>
+                        <small class="text-muted">Autor: ${sanitizeHTML(f.autor || 'N/I')} | Categoria: ${sanitizeHTML(f.categoria || 'N/I')}</small>
+                    </div>
+                `).join('')
+                : '<p class="text-center text-muted small">Você não possui livros favoritos.</p>';
+
+            alertify.alert('Meus Favoritos', favoritosHTML);
+        }
+
+        function mostrarSobre() {
+            alertify.alert('Sobre o Sistema', `
+                <div class="text-center p-2">
+                    <h6 class="fw-bold text-primary mb-2">Biblioteca Virtual ISPP-LUENA</h6>
+                    <p class="small mb-1"><strong>Versão:</strong> 2.2.0 (Layout Prateleira)</p>
+                    <p class="small mb-1"><strong>Última atualização:</strong> Janeiro 2024</p>
+                    <p class="small mb-0">Sistema desenvolvido para gerenciamento e disponibilização de materiais acadêmicos da instituição.</p>
+                </div>
+            `);
+        }
+
+        function mostrarContato() {
+            alertify.alert('Contato', `
+                <div class="p-2">
+                    <h6 class="fw-bold text-primary mb-2">Fale Conosco</h6>
+                    <p class="small mb-1"><i class="fas fa-envelope me-1"></i> <strong>Email de Suporte:</strong> suporte@ispp.co.ao</p>
+                    <p class="small mb-1"><i class="fas fa-phone me-1"></i> <strong>Telefone:</strong> +244 XXX XX XX XX</p>
+                    <p class="small mb-0"><i class="fas fa-map-marker-alt me-1"></i> <strong>Endereço:</strong> Luena, Moxico, Angola</p>
+                </div>
+            `);
+        }
+
+        function mostrarPolitica() {
+            alertify.alert('Política de Uso', `
+                <div class="p-3">
+                    <h4 class="fw-bold text-primary mb-3">Termos de Uso</h4>
+                    <p>1. O uso da biblioteca virtual é restrito a estudantes cadastrados.</p>
+                    <p>2. Os materiais são para uso acadêmico exclusivamente.</p>
+                    <p>3. É proibida a redistribuição dos conteúdos sem autorização.</p>
+                    <p>4. O sistema mantém registro de downloads para fins estatísticos.</p>
+                    <p>5. Reporte qualquer problema técnico ao suporte.</p>
+                    <hr>
+                    <p class="text-muted small">Ao utilizar o sistema, você concorda com estes termos.</p>
+                </div>
+            `);
+        }
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Configurar alertify
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            
+            // Carregar dados
+            await loadUserInfo();
+            await carregarLivros();
+            
+            // Configurar eventos
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    realizarBusca();
+                }
+            });
+            
+            // Configurar eventos dos filtros
+            document.getElementById('filtro-categoria').addEventListener('change', aplicarFiltros);
+            document.getElementById('filtro-autor').addEventListener('change', aplicarFiltros);
+            document.getElementById('filtro-ordenacao').addEventListener('change', aplicarFiltros);
+            
+            // Mostrar mensagem de boas-vindas
+            setTimeout(() => {
+                alertify.success('Bem-vindo ao Acervo Completo!');
+            }, 800);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Página Inicial</title>
+
+    <!-- Bootstrap e Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+    <style>
+        /* VARIÁVEIS DE CORES */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-primary-dark: #1B5E20;
+        }
+
+        /* BACKGROUND BRANCO PURO */
+        body {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER FIXO - IMAGEM ESQUERDA, BOTÕES DIREITA */
+        .main-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            padding: 0.75rem 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* LOGO À ESQUERDA */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 5px;
+            background-color: white;
+            padding: 2px;
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.2;
+        }
+
+        /* BOTÕES À DIREITA - SEMPRE NA HORIZONTAL */
+        .header-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .header-btn.secondary {
+            background: linear-gradient(135deg, var(--color-secondary), #FFC107);
+            border: none;
+        }
+
+        /* CONTEÚDO PRINCIPAL - OCUPA TUDO */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background-color: var(--color-white);
+        }
+
+        /* SEÇÃO DE BOAS-VINDAS */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+        }
+
+        .welcome-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* BARRA DE BUSCA */
+        .main-search {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+            background: transparent;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        /* ALERTA DE LOGIN */
+        .login-alert {
+            background: linear-gradient(135deg, #f0fff2, #e8ffea);
+            border: 1px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 0 auto 2rem;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .alert-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .alert-text {
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .alert-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .alert-btn {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .alert-btn.primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: white;
+            border: none;
+        }
+
+        .alert-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        .alert-btn.secondary {
+            background: white;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .alert-btn.secondary:hover {
+            background: var(--color-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ESTATÍSTICAS - 2 EM CADA LINHA (MOBILE) */
+        .stats-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 1.25rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas em mobile */
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        /* FILTROS */
+        .filters-section {
+            margin-bottom: 2rem;
+            background: var(--color-light-gray);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .filters-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .filter-select {
+            min-width: 140px;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--color-text-main);
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        /* PRATELEIRA DE LIVROS - MESMO LAYOUT 3 POR LINHA */
+        .books-section {
+            margin-bottom: 2rem;
+        }
+
+        .shelf {
+            background: linear-gradient(to bottom, #8B4513 0%, #A0522D 30%, #8B4513 100%);
+            height: 10px;
+            border-radius: 3px;
+            margin-bottom: 1.25rem;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .book-item {
+            perspective: 800px;
+            height: 170px;
+            cursor: pointer;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .book-cover {
+            position: relative;
+            width: 100%;
+            height: 130px;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+
+        .book-item:hover .book-cover {
+            transform: rotateY(-15deg) translateX(-5px);
+        }
+
+        .book-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 3px 6px 6px 3px;
+            box-shadow: 
+                3px 3px 8px rgba(0,0,0,0.2),
+                inset 1px 0 0 rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 0.6rem;
+            overflow: hidden;
+        }
+
+        .book-icon {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+        }
+
+        .book-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 0.6rem;
+            opacity: 0.9;
+            text-align: center;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.4rem;
+            background: rgba(0,0,0,0.6);
+            border-radius: 0 0 3px 3px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .book-item:hover .book-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-actions .btn {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.65rem;
+            flex: 1;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .book-category {
+            margin-top: 0.2rem;
+            text-align: center;
+        }
+
+        .book-category .badge {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.35rem;
+            background: var(--color-secondary);
+            color: var(--color-text-main);
+        }
+
+        /* RODAPÉ (DO CÓDIGO ANTERIOR) */
+        .footer-main {
+            background: var(--color-primary-dark);
+            color: white;
+            margin-top: auto;
+            padding: 1rem 0 !important;
+            font-size: 0.85rem;
+        }
+        
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD54F;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* RESPONSIVIDADE */
+        @media (min-width: 768px) {
+            .main-header {
+                padding: 1rem 2rem;
+            }
+            
+            .logo-img {
+                height: 55px;
+            }
+            
+            .logo-title {
+                font-size: 1.3rem;
+            }
+            
+            .header-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 colunas em desktop */
+                max-width: 100%;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .stat-card {
+                padding: 1.25rem;
+            }
+            
+            .stat-icon {
+                font-size: 1.8rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .book-item {
+                height: 190px;
+            }
+            
+            .book-cover {
+                height: 150px;
+            }
+            
+            .book-title {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .header-container {
+                flex-direction: row; /* SEMPRE EM LINHA NO MOBILE */
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo-section {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .logo-text {
+                min-width: 0;
+            }
+            
+            .logo-title {
+                font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.7rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .header-buttons {
+                flex-shrink: 0;
+            }
+            
+            .header-btn {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.75rem;
+            }
+            
+            .header-btn i {
+                font-size: 0.8rem;
+            }
+            
+            /* Texto dos botões só ícones em telas muito pequenas */
+            @media (max-width: 380px) {
+                .header-btn span {
+                    display: none;
+                }
+                
+                .header-btn {
+                    padding: 0.4rem;
+                    width: 40px;
+                    height: 40px;
+                    justify-content: center;
+                }
+                
+                .header-btn i {
+                    font-size: 1rem;
+                    margin: 0;
+                }
+            }
+            
+            .welcome-title {
+                font-size: 1.3rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .alert-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .alert-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .book-item {
+                height: 150px;
+            }
+            
+            .book-cover {
+                height: 110px;
+            }
+            
+            .book-title {
+                font-size: 0.65rem;
+                height: 1.8rem;
+            }
+            
+            .book-author {
+                font-size: 0.55rem;
+                height: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                gap: 0.75rem;
+            }
+            
+            .stat-card {
+                padding: 0.85rem;
+            }
+            
+            .stat-icon {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .books-grid {
+                gap: 0.4rem;
+            }
+            
+            .book-item {
+                height: 140px;
+            }
+            
+            .book-cover {
+                height: 100px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* SCROLLBAR FINA */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(46, 125, 50, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER COM LOGO E BOTÕES -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- LOGO À ESQUERDA -->
+            <div class="logo-section">
+                <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+                <div class="logo-text">
+                    <div class="logo-title">ISPP-LUENA</div>
+                    <div class="logo-subtitle">Biblioteca Virtual</div>
+                </div>
+            </div>
+            
+            <!-- BOTÕES À DIREITA -->
+            <div class="header-buttons">
+                <a href="/auth/login" class="header-btn">
+                    <i class="fas fa-sign-in-alt"></i> <span>Login</span>
+                </a>
+                <a href="/auth/cadastro" class="header-btn secondary">
+                    <i class="fas fa-user-plus"></i> <span>Cadastrar</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        <!-- SEÇÃO DE BOAS-VINDAS -->
+        <section class="welcome-section">
+            <div class="welcome-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h1 class="welcome-title">Bem-vindo à Biblioteca Virtual</h1>
+            <p class="welcome-text">
+                Acesse livros acadêmicos e recursos educacionais para estudantes e professores do ISPP-LUENA.
+            </p>
+        </section>
+
+        <!-- BARRA DE BUSCA -->
+        <section class="main-search">
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input" 
+                       placeholder="Buscar por livro, autor, categoria...">
+                <button class="search-button" onclick="filtrarLivros()">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </section>
+
+        <!-- ALERTA DE LOGIN -->
+        <div class="login-alert" id="mensagem-login" style="display: none;">
+            <h3 class="alert-title">
+                <i class="fas fa-lock"></i> Acesso Restrito
+            </h3>
+            <p class="alert-text">
+                Faça login para acessar todos os livros e recursos disponíveis na biblioteca virtual.
+            </p>
+            <div class="alert-buttons">
+                <a href="/auth/login" class="alert-btn primary">
+                    <i class="fas fa-sign-in-alt"></i> Fazer Login
+                </a>
+                <a href="/auth/cadastro" class="alert-btn secondary">
+                    <i class="fas fa-user-plus"></i> Criar Conta
+                </a>
+            </div>
+        </div>
+
+        <!-- ESTATÍSTICAS - 2 EM CADA LINHA NO MOBILE -->
+        <section class="stats-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i> Estatísticas
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-number" id="total-livros">0</div>
+                    <div class="stat-label">Livros</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="stat-number" id="total-autores">0</div>
+                    <div class="stat-label">Autores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="stat-number" id="total-categorias">0</div>
+                    <div class="stat-label">Categorias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-number" id="total-professores">0</div>
+                    <div class="stat-label">Professores</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTROS -->
+        <section class="filters-section">
+            <h3 class="filters-title">
+                <i class="fas fa-filter"></i> Filtrar Livros
+            </h3>
+            <div class="filters-container">
+                <select id="filtro-categoria-mobile" class="filter-select">
+                    <option value="">Categoria</option>
+                </select>
+                <select id="filtro-autor-mobile" class="filter-select">
+                    <option value="">Autor</option>
+                </select>
+                <select id="filtro-professor-mobile" class="filter-select">
+                    <option value="">Professor</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- PRATELEIRA DE LIVROS EM DESTAQUE -->
+        <section class="books-section">
+            <h2 class="section-title">
+                <i class="fas fa-star text-warning"></i> Livros em Destaque
+            </h2>
+            <div class="shelf"></div>
+            <div class="books-grid" id="destaques-container">
+                <!-- 6 LIVROS SERÃO INSERIDOS AQUI -->
+                <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="text-muted mb-0">Carregando livros em destaque...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ (DO CÓDIGO ANTERIOR) -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <img src="/img/descarregar.png" alt="ISPP Luena" class="footer-logo">
+                <div class="mb-1">ISPP-LUENA - Biblioteca Virtual</div>
+                <div class="footer-links">
+                    <a href="#" onclick="mostrarSobre()">Sobre</a>
+                    <a href="#" onclick="mostrarContato()">Contato</a>
+                    <a href="/auth/login">Login</a>
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-envelope me-1"></i>suporte@bibliotecavirtual.com
+                </div>
+                <div class="mt-2">
+                    &copy; <span id="current-year"></span> ISPP-LUENA
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DOS LIVROS -->
+    <div class="modal fade" id="livroModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white py-2">
+                    <h5 class="modal-title fs-6" id="modalLivroTitulo"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="bg-primary text-white rounded p-3 text-center mb-2">
+                                <i class="fas fa-book fa-2x"></i>
+                            </div>
+                            <div class="d-grid gap-1">
+                                <button class="btn btn-sm btn-outline-primary" onclick="adicionarFavoritoModal()">
+                                    <i class="fas fa-heart me-1"></i>Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Autor:</strong></p>
+                                <p class="small mb-2" id="modalLivroAutor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Categoria:</strong></p>
+                                <p class="small mb-2" id="modalLivroCategoria"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Professor:</strong></p>
+                                <p class="small mb-2" id="modalLivroProfessor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Adicionado:</strong></p>
+                                <p class="small mb-2" id="modalLivroData"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Downloads:</strong></p>
+                                <p class="small mb-0" id="modalLivroDownloads"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="mb-1 small"><strong>Descrição:</strong></p>
+                        <p class="small text-muted mb-0" id="modalLivroDescricao"></p>
+                    </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CÓDIGO JAVASCRIPT -->
+    <script>
+        // Configuração inicial
+        alertify.defaults.transition = "zoom";
+        alertify.defaults.notifier.position = 'top-right';
+
+        let livros = [];
+        let userLoggedIn = false; 
+        let livroModalAtual = null;
+
+        // Ano atual no footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Verificar se usuário está logado
+        async function verificarLogin() {
+            try {
+                const response = await fetch('/api/user-info'); 
+                if (response.ok) {
+                    userLoggedIn = true;
+                    document.getElementById('mensagem-login').style.display = 'none';
+                } else {
+                    document.getElementById('mensagem-login').style.display = 'block';
+                }
+            } catch (error) {
+                console.log('Usuário não logado');
+                document.getElementById('mensagem-login').style.display = 'block';
+            }
+        }
+
+        // Carregar estatísticas da API
+        async function carregarEstatisticas() {
+            try {
+                const response = await fetch('/api/estatisticas-gerais');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('total-livros').textContent = stats.totalLivros || 0;
+                    document.getElementById('total-autores').textContent = stats.totalAutores || 0;
+                    document.getElementById('total-categorias').textContent = stats.totalCategorias || 0;
+                    document.getElementById('total-professores').textContent = stats.totalProfessores || 0;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                document.getElementById('total-livros').textContent = "0";
+                document.getElementById('total-autores').textContent = "0";
+                document.getElementById('total-categorias').textContent = "0";
+                document.getElementById('total-professores').textContent = "0";
+            }
+        }
+
+        // Função para sanitizar HTML
+        function sanitizeHTML(str) {
+            if (typeof str !== 'string') return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // Carregar filtros da API
+        async function carregarFiltros() {
+            try {
+                // Carregar categorias
+                const categoriasResponse = await fetch('/api/categorias');
+                let categorias = [];
+                if (categoriasResponse.ok) {
+                    categorias = await categoriasResponse.json();
+                }
+
+                // Carregar autores
+                const autoresResponse = await fetch('/api/autores');
+                let autores = [];
+                if (autoresResponse.ok) {
+                    autores = await autoresResponse.json();
+                }
+
+                // Preencher filtros
+                const filtroCategoriaMobile = document.getElementById('filtro-categoria-mobile');
+                const filtroAutorMobile = document.getElementById('filtro-autor-mobile');
+                const filtroProfessorMobile = document.getElementById('filtro-professor-mobile');
+
+                // Limpar opções existentes
+                [filtroCategoriaMobile, filtroAutorMobile, filtroProfessorMobile].forEach(select => {
+                    if (select) {
+                        const firstOption = select.options[0];
+                        select.innerHTML = '';
+                        if (firstOption) select.appendChild(firstOption);
+                    }
+                });
+
+                // Preencher categorias
+                categorias.forEach(categoria => {
+                    if (filtroCategoriaMobile) {
+                        filtroCategoriaMobile.innerHTML += `<option value="${sanitizeHTML(categoria.nome)}">${sanitizeHTML(categoria.nome)}</option>`;
+                    }
+                });
+
+                // Preencher autores
+                autores.forEach(autor => {
+                    if (filtroAutorMobile) {
+                        filtroAutorMobile.innerHTML += `<option value="${sanitizeHTML(autor.nome)}">${sanitizeHTML(autor.nome)}</option>`;
+                    }
+                });
+
+                // Preencher professores
+                if (livros.length > 0) {
+                    const professoresUnicos = [...new Set(livros.map(l => l.professor_nome).filter(Boolean))];
+                    professoresUnicos.forEach(prof => {
+                        if (filtroProfessorMobile) {
+                            filtroProfessorMobile.innerHTML += `<option value="${sanitizeHTML(prof)}">${sanitizeHTML(prof)}</option>`;
+                        }
+                    });
+                }
+
+            } catch (error) {
+                console.error('Erro ao carregar filtros:', error);
+            }
+        }
+
+        // Carregar livros da API
+        async function carregarLivros() {
+            try {
+                const response = await fetch('/api/livros-destaque');
+                if (response.ok) {
+                    livros = await response.json();
+                    console.log(`API retornou ${livros.length} livros em destaque`);
+                    carregarFiltros();
+                    exibirLivrosDestaque();
+                    carregarEstatisticas();
+                } else {
+                    mostrarErroCarregamento();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar livros:', error);
+                mostrarErroCarregamento();
+            }
+        }
+
+        // Mostrar erro de carregamento
+        function mostrarErroCarregamento() {
+            const container = document.getElementById('destaques-container');
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                    <p class="text-muted mb-0">Erro ao carregar livros. Tente novamente mais tarde.</p>
+                </div>
+            `;
+        }
+
+        // Template para livro na prateleira
+        function templateLivroPrateleira(livro) {
+            const titulo = sanitizeHTML(livro.titulo);
+            const autor = sanitizeHTML(livro.autor_nome || 'Autor não informado');
+            const categoria = sanitizeHTML(livro.categoria_nome);
+            
+            const cores = [
+                'linear-gradient(135deg, #2E7D32, #4CAF50)',
+                'linear-gradient(135deg, #1565C0, #1976D2)',
+                'linear-gradient(135deg, #6A1B9A, #8E24AA)',
+                'linear-gradient(135deg, #C62828, #D32F2F)',
+                'linear-gradient(135deg, #FF9800, #FF5722)',
+                'linear-gradient(135deg, #0097A7, #00BCD4)'
+            ];
+            const corIndex = livro.id % cores.length;
+            
+            return `
+                <div class="book-item" data-id="${livro.id}">
+                    <span class="book-badge"><i class="fas fa-star"></i> Destaque</span>
+                    <div class="book-cover">
+                        <div class="book-front" style="background: ${cores[corIndex]}">
+                            <i class="fas fa-book book-icon"></i>
+                            <div class="book-title">${titulo}</div>
+                            <div class="book-author">${autor}</div>
+                        </div>
+                    </div>
+                    <div class="book-actions">
+                        <button class="btn btn-sm btn-primary" onclick="mostrarDetalhesLivro(${livro.id})">
+                            <i class="fas fa-info"></i>
+                        </button>
+                    </div>
+                    <div class="book-category">
+                        <span class="badge">${categoria || 'Sem categoria'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Exibir livros em destaque
+        function exibirLivrosDestaque() {
+            const container = document.getElementById('destaques-container');
+            
+            if (!livros || livros.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                        <i class="fas fa-book fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Nenhum livro disponível no momento</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const livrosParaExibir = livros.slice(0, 6);
+            container.innerHTML = '';
+            
+            livrosParaExibir.forEach(livro => {
+                const livroCard = document.createElement('div');
+                livroCard.className = 'book-item';
+                livroCard.setAttribute('data-id', livro.id);
+                livroCard.innerHTML = templateLivroPrateleira(livro);
+                container.appendChild(livroCard);
+            });
+            
+            if (livrosParaExibir.length < 6) {
+                const mensagem = document.createElement('div');
+                mensagem.style.gridColumn = '1 / -1';
+                mensagem.style.textAlign = 'center';
+                mensagem.style.marginTop = '1rem';
+                mensagem.innerHTML = `
+                    <p class="small text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Mostrando ${livrosParaExibir.length} de 6 livros em destaque
+                    </p>
+                `;
+                container.appendChild(mensagem);
+            }
+        }
+
+        // Filtrar livros
+        function filtrarLivros() {
+            const buscaInput = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            const categoria = document.getElementById('filtro-categoria-mobile') ? 
+                             document.getElementById('filtro-categoria-mobile').value : '';
+            
+            const autor = document.getElementById('filtro-autor-mobile') ? 
+                         document.getElementById('filtro-autor-mobile').value : '';
+            
+            const professor = document.getElementById('filtro-professor-mobile') ? 
+                            document.getElementById('filtro-professor-mobile').value : '';
+
+            let livrosFiltrados = livros;
+
+            if (categoria && categoria !== "") {
+                livrosFiltrados = livrosFiltrados.filter(l => l.categoria_nome === categoria);
+            }
+            if (autor && autor !== "") {
+                livrosFiltrados = livrosFiltrados.filter(l => l.autor_nome === autor);
+            }
+            if (professor && professor !== "") {
+                livrosFiltrados = livrosFiltrados.filter(l => l.professor_nome === professor);
+            }
+            if (buscaInput) {
+                livrosFiltrados = livrosFiltrados.filter(l => 
+                    (l.titulo && l.titulo.toLowerCase().includes(buscaInput)) || 
+                    (l.autor_nome && l.autor_nome.toLowerCase().includes(buscaInput)) || 
+                    (l.categoria_nome && l.categoria_nome.toLowerCase().includes(buscaInput)) || 
+                    (l.professor_nome && l.professor_nome.toLowerCase().includes(buscaInput))
+                );
+            }
+
+            const livrosOriginais = [...livros];
+            livros = livrosFiltrados;
+            exibirLivrosDestaque();
+            livros = livrosOriginais;
+        }
+
+        // MOSTRAR DETALHES DO LIVRO
+        async function mostrarDetalhesLivro(livroId) {
+            try {
+                const livro = livros.find(l => l.id === livroId);
+                if (!livro) {
+                    throw new Error('Livro não encontrado localmente.');
+                }
+                
+                livroModalAtual = livro;
+                
+                const modal = new bootstrap.Modal(document.getElementById('livroModal'));
+                document.getElementById('modalLivroTitulo').textContent = sanitizeHTML(livro.titulo);
+                document.getElementById('modalLivroAutor').textContent = sanitizeHTML(livro.autor_nome || 'Não informado');
+                document.getElementById('modalLivroProfessor').textContent = sanitizeHTML(livro.professor_nome || 'Não informado');
+                document.getElementById('modalLivroCategoria').textContent = sanitizeHTML(livro.categoria_nome || 'Não informada');
+                document.getElementById('modalLivroData').textContent = new Date(livro.criado_em || Date.now()).toLocaleDateString('pt-BR');
+                document.getElementById('modalLivroDownloads').textContent = (livro.downloads || 0).toLocaleString();
+                document.getElementById('modalLivroDescricao').textContent = sanitizeHTML(livro.descricao || 'Nenhuma descrição detalhada disponível.');
+                
+                modal.show();
+                
+            } catch (error) {
+                console.error('Erro ao mostrar detalhes do livro:', error);
+                alertify.error('Não foi possível carregar os detalhes do livro');
+            }
+        }
+
+        // ADICIONAR AOS FAVORITOS
+        function adicionarFavoritoModal() {
+            if (livroModalAtual) {
+                const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+                
+                if (!favoritos.find(f => f.id === livroModalAtual.id)) {
+                    favoritos.push({
+                        id: livroModalAtual.id,
+                        titulo: sanitizeHTML(livroModalAtual.titulo),
+                        autor: sanitizeHTML(livroModalAtual.autor_nome),
+                        categoria: sanitizeHTML(livroModalAtual.categoria_nome),
+                        data: new Date().toLocaleDateString('pt-BR')
+                    });
+                    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+                    alertify.success(`"${sanitizeHTML(livroModalAtual.titulo)}" adicionado aos favoritos`);
+                    
+                    bootstrap.Modal.getInstance(document.getElementById('livroModal')).hide();
+                } else {
+                    alertify.message('Livro já está nos favoritos');
+                }
+            }
+        }
+
+        // Funções auxiliares
+        function mostrarSobre() {
+            alertify.alert('Sobre a Biblioteca Virtual', 
+                'A Biblioteca Virtual do ISPP-LUENA é uma plataforma digital desenvolvida para facilitar o acesso a livros acadêmicos, recursos educacionais e materiais de estudo para estudantes e professores.');
+        }
+
+        function mostrarContato() {
+            alertify.alert('Contato', 
+                'Para suporte ou dúvidas, entre em contato:<br><br>' +
+                '<strong>E-mail:</strong> suporte@bibliotecavirtual.com<br>' +
+                '<strong>Telefone:</strong> (123) 456-7890<br>' +
+                '<strong>Horário:</strong> Segunda a Sexta, 8h às 17h');
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', filtrarLivros);
+        
+        if (document.getElementById('filtro-categoria-mobile')) {
+            document.getElementById('filtro-categoria-mobile').addEventListener('change', filtrarLivros);
+        }
+        if (document.getElementById('filtro-autor-mobile')) {
+            document.getElementById('filtro-autor-mobile').addEventListener('change', filtrarLivros);
+        }
+        if (document.getElementById('filtro-professor-mobile')) {
+            document.getElementById('filtro-professor-mobile').addEventListener('change', filtrarLivros);
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', async function() {
+            await verificarLogin();
+            await carregarLivros();
+            
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+        });
+    </script>
+</body>
+</html>

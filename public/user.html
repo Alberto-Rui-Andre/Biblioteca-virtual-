@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Estudante</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <style>
+        /* VARIÁVEIS DE CORES */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-primary-dark: #1B5E20;
+        }
+
+        /* BACKGROUND BRANCO PURO */
+        body {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER FIXO - COM NAVBAR */
+        .main-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        /* NAVBAR ESTERILIZADA */
+        .navbar-custom {
+            background: transparent !important;
+            padding: 0.5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 5px;
+            background-color: white;
+            padding: 2px;
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.2;
+        }
+
+        /* LINKS DA NAVBAR */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            margin: 0 0.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link i {
+            font-size: 0.9rem;
+        }
+
+        /* DROPDOWN DO USUÁRIO */
+        .dropdown-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white !important;
+            padding: 0.4rem 0.8rem !important;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dropdown-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown-menu {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-item i {
+            width: 1rem;
+            text-align: center;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background-color: var(--color-white);
+        }
+
+        /* SEÇÃO DE BOAS-VINDAS */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+        }
+
+        .welcome-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* BARRA DE BUSCA */
+        .main-search {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+            background: transparent;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        /* ESTATÍSTICAS */
+        .stats-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 1.25rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        /* ACESSO RÁPIDO */
+        .access-section {
+            margin-bottom: 2rem;
+        }
+
+        .access-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .access-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 100%;
+            }
+        }
+
+        .access-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--color-text-main);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .access-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.1);
+            color: var(--color-text-main);
+        }
+
+        .access-icon {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .access-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* ATIVIDADE RECENTE */
+        .activity-section {
+            margin-bottom: 2rem;
+        }
+
+        .activity-list {
+            background: var(--color-light-gray);
+            border-radius: 10px;
+            padding: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .activity-item {
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--color-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--color-text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* PRATELEIRA DE LIVROS - MESMO LAYOUT 3 POR LINHA */
+        .books-section {
+            margin-bottom: 2rem;
+        }
+
+        .shelf {
+            background: linear-gradient(to bottom, #8B4513 0%, #A0522D 30%, #8B4513 100%);
+            height: 10px;
+            border-radius: 3px;
+            margin-bottom: 1.25rem;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .book-item {
+            perspective: 800px;
+            height: 170px;
+            cursor: pointer;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .book-cover {
+            position: relative;
+            width: 100%;
+            height: 130px;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+
+        .book-item:hover .book-cover {
+            transform: rotateY(-15deg) translateX(-5px);
+        }
+
+        .book-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 3px 6px 6px 3px;
+            box-shadow: 
+                3px 3px 8px rgba(0,0,0,0.2),
+                inset 1px 0 0 rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 0.6rem;
+            overflow: hidden;
+        }
+
+        .book-icon {
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+        }
+
+        .book-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 0.6rem;
+            opacity: 0.9;
+            text-align: center;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.4rem;
+            background: rgba(0,0,0,0.6);
+            border-radius: 0 0 3px 3px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .book-item:hover .book-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-actions .btn {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.65rem;
+            flex: 1;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 8px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .book-category {
+            margin-top: 0.2rem;
+            text-align: center;
+        }
+
+        .book-category .badge {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.35rem;
+            background: var(--color-secondary);
+            color: var(--color-text-main);
+        }
+
+        /* RODAPÉ */
+        .footer-main {
+            background: var(--color-primary-dark);
+            color: white;
+            margin-top: auto;
+            padding: 1rem 0 !important;
+            font-size: 0.85rem;
+        }
+        
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD54F;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* RESPONSIVIDADE */
+        @media (min-width: 768px) {
+            .navbar-custom {
+                padding: 0.5rem 2rem;
+            }
+            
+            .logo-img {
+                height: 45px;
+            }
+            
+            .logo-title {
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 100%;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .stat-card, .access-card {
+                padding: 1.25rem;
+            }
+            
+            .stat-icon, .access-icon {
+                font-size: 1.8rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .book-item {
+                height: 190px;
+            }
+            
+            .book-cover {
+                height: 150px;
+            }
+            
+            .book-title {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .navbar-brand {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .logo-title {
+                font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.7rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .navbar-toggler {
+                border-color: rgba(255,255,255,0.5);
+                padding: 0.25rem 0.5rem;
+            }
+            
+            .navbar-toggler-icon {
+                filter: brightness(0) invert(1);
+            }
+            
+            .welcome-title {
+                font-size: 1.3rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .book-item {
+                height: 150px;
+            }
+            
+            .book-cover {
+                height: 110px;
+            }
+            
+            .book-title {
+                font-size: 0.65rem;
+                height: 1.8rem;
+            }
+            
+            .book-author {
+                font-size: 0.55rem;
+                height: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid, .access-grid {
+                gap: 0.75rem;
+            }
+            
+            .stat-card, .access-card {
+                padding: 0.85rem;
+            }
+            
+            .stat-icon {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .books-grid {
+                gap: 0.4rem;
+            }
+            
+            .book-item {
+                height: 140px;
+            }
+            
+            .book-cover {
+                height: 100px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* NAVBAR RESPONSIVA ADICIONAL */
+        @media (max-width: 380px) {
+            .navbar-nav .nav-link span:not(.fa) {
+                display: none;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.5rem;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+            
+            .dropdown-toggle span {
+                display: none;
+            }
+            
+            .dropdown-toggle {
+                padding: 0.5rem !important;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER COM NAVBAR -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="user.html">
+                    <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+                    <div class="logo-text">
+                        <div class="logo-title">ISPP-LUENA</div>
+                        <div class="logo-subtitle">Biblioteca Virtual</div>
+                    </div>
+                </a>
+                
+                <!-- BOTÃO TOGGLER PARA MOBILE -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- MENU -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="user.html">
+                                <i class="fas fa-home"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="acervo.html">
+                                <i class="fas fa-book-reader"></i> <span>Acervo</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarMeusDownloads()">
+                                <i class="fas fa-download"></i> <span>Meus Downloads</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="mostrarFavoritos()">
+                                <i class="fas fa-heart"></i> <span>Favoritos</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- USUÁRIO -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> <span id="user-name">Estudante</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#" onclick="mostrarSobre()">
+                                    <i class="fas fa-info-circle"></i> Sobre o Sistema
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="mostrarContato()">
+                                    <i class="fas fa-headset"></i> Contato/Suporte
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i> Sair
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        
+        <!-- SEÇÃO DE BOAS-VINDAS -->
+        <section class="welcome-section">
+            <div class="welcome-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h1 class="welcome-title" id="welcome-message">Olá, Estudante!</h1>
+            <p class="welcome-text">Encontre o material de estudo perfeito na nossa biblioteca virtual.</p>
+        </section>
+
+        <!-- BARRA DE BUSCA -->
+        <section class="main-search">
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input" 
+                       placeholder="Buscar por título, autor ou categoria...">
+                <button class="search-button" onclick="realizarBusca()">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </section>
+
+        <!-- ESTATÍSTICAS -->
+        <section class="stats-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i> Estatísticas da Biblioteca
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-number" id="total-livros">0</div>
+                    <div class="stat-label">Livros</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="stat-number" id="total-autores">0</div>
+                    <div class="stat-label">Autores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="stat-number" id="total-categorias">0</div>
+                    <div class="stat-label">Categorias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-number" id="total-professores">0</div>
+                    <div class="stat-label">Professores</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACESSO RÁPIDO -->
+        <section class="access-section">
+            <h2 class="section-title">
+                <i class="fas fa-bolt"></i> Acesso Rápido
+            </h2>
+            <div class="access-grid">
+                <a href="acervo.html" class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <div class="access-title">Acervo Completo</div>
+                </a>
+                <a href="#" onclick="mostrarMeusDownloads()" class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="access-title">Meus Downloads</div>
+                </a>
+                <a href="#" onclick="mostrarFavoritos()" class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="access-title">Favoritos</div>
+                </a>
+                <a href="#" onclick="mostrarContato()" class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="access-title">Suporte</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ATIVIDADE RECENTE -->
+        <section class="activity-section">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i> Atividade Recente
+            </h2>
+            <div class="activity-list" id="recent-activity-list">
+                <div class="activity-item">
+                    <div class="activity-title">
+                        <i class="fas fa-info-circle text-primary"></i>
+                        Bem-vindo à Biblioteca Virtual
+                    </div>
+                    <div class="activity-time">Agora mesmo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVROS EM DESTAQUE -->
+        <section class="books-section">
+            <h2 class="section-title">
+                <i class="fas fa-star text-warning"></i> Livros em Destaque
+            </h2>
+            <div class="shelf"></div>
+            <div class="books-grid" id="destaques-container">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="text-muted mb-0">Carregando livros em destaque...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <img src="/img/descarregar.png" alt="ISPP Luena" class="footer-logo">
+                <div class="mb-1">ISPP-LUENA - Biblioteca Virtual</div>
+                <div class="footer-links">
+                    <a href="#" onclick="mostrarSobre()">Sobre</a>
+                    <a href="acervo.html">Acervo</a>
+                    <a href="#" onclick="mostrarContato()">Contato</a>
+                    <a href="#" onclick="mostrarPolitica()">Política de Uso</a>
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-envelope me-1"></i>suporte@bibliotecavirtual.com
+                    <span class="mx-2">|</span>
+                    <i class="fas fa-phone me-1"></i>(11) 9999-8888
+                </div>
+                <div class="mt-2">
+                    &copy; <span id="current-year"></span> ISPP-LUENA
+                    <br>
+                    <small class="opacity-75">Sistema de Gestão Acadêmica</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE DETALHES DO LIVRO -->
+    <div class="modal fade" id="livroModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white py-2">
+                    <h5 class="modal-title fs-6" id="modalLivroTitulo"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="bg-primary text-white rounded p-3 text-center mb-2">
+                                <i class="fas fa-book fa-2x"></i>
+                            </div>
+                            <div class="d-grid gap-1">
+                                <button class="btn btn-sm btn-success" id="btn-download-modal">
+                                    <i class="fas fa-download me-1"></i>Baixar
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="adicionarFavoritoModal()">
+                                    <i class="fas fa-heart me-1"></i>Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Autor:</strong></p>
+                                <p class="small mb-2" id="modalLivroAutor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Categoria:</strong></p>
+                                <p class="small mb-2" id="modalLivroCategoria"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Professor:</strong></p>
+                                <p class="small mb-2" id="modalLivroProfessor"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Adicionado:</strong></p>
+                                <p class="small mb-2" id="modalLivroData"></p>
+                            </div>
+                            <div class="mb-2">
+                                <p class="mb-1 small"><strong>Downloads:</strong></p>
+                                <p class="small mb-0" id="modalLivroDownloads"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="mb-1 small"><strong>Descrição:</strong></p>
+                        <p class="small text-muted mb-0" id="modalLivroDescricao"></p>
+                    </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script>
+        // Configuração
+        alertify.defaults.transition = "zoom";
+        alertify.defaults.notifier.position = 'top-right';
+        alertify.defaults.theme.ok = "btn btn-primary";
+        alertify.defaults.theme.cancel = "btn btn-danger";
+
+        let todosLivros = [];
+        let livrosDestaque = [];
+        let livroModalAtual = null;
+        let meusDownloads = JSON.parse(localStorage.getItem('meusDownloads')) || [];
+        let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+
+        // Ano atual no footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Função para sanitizar HTML
+        function sanitizeHTML(str) {
+            if (typeof str !== 'string') return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // Carregar informações do usuário
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/user-info');
+                if (response.ok) {
+                    const user = await response.json();
+                    const nomeSanitizado = sanitizeHTML(user.nome || 'Estudante');
+                    document.getElementById('user-name').textContent = nomeSanitizado;
+                    document.getElementById('welcome-message').textContent = `Olá, ${nomeSanitizado}!`;
+                }
+            } catch (error) {
+                console.log('Erro ao carregar informações do usuário');
+            }
+        }
+
+        // Carregar estatísticas da API
+        async function carregarEstatisticas() {
+            try {
+                const response = await fetch('/api/estatisticas-gerais');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('total-livros').textContent = stats.totalLivros || 0;
+                    document.getElementById('total-autores').textContent = stats.totalAutores || 0;
+                    document.getElementById('total-categorias').textContent = stats.totalCategorias || 0;
+                    document.getElementById('total-professores').textContent = stats.totalProfessores || 0;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                document.getElementById('total-livros').textContent = "0";
+                document.getElementById('total-autores').textContent = "0";
+                document.getElementById('total-categorias').textContent = "0";
+                document.getElementById('total-professores').textContent = "0";
+            }
+        }
+
+        // Carregar livros em destaque da API
+        async function carregarLivrosDestaque() {
+            try {
+                const response = await fetch('/api/livros-destaque');
+                if (response.ok) {
+                    todosLivros = await response.json();
+                    console.log(`API retornou ${todosLivros.length} livros`);
+                    
+                    livrosDestaque = todosLivros.slice(0, 6);
+                    exibirLivrosDestaque();
+                    carregarAtividadeRecente();
+                } else {
+                    mostrarErroCarregamento('Erro ' + response.status + ': ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar livros:', error);
+                mostrarErroCarregamento('Erro de conexão: ' + error.message);
+            }
+        }
+
+        // Mostrar erro de carregamento
+        function mostrarErroCarregamento(mensagem) {
+            const container = document.getElementById('destaques-container');
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                    <p class="text-muted mb-2">${mensagem || 'Erro ao carregar livros.'}</p>
+                    <p class="text-muted small mb-3">Verifique sua conexão ou tente novamente.</p>
+                    <button class="btn btn-sm btn-primary" onclick="carregarLivrosDestaque()">
+                        <i class="fas fa-redo me-1"></i>Tentar Novamente
+                    </button>
+                </div>
+            `;
+        }
+
+        // Template para livro na prateleira
+        function templateLivroPrateleira(livro) {
+            const titulo = sanitizeHTML(livro.titulo);
+            const autor = sanitizeHTML(livro.autor_nome || 'Autor não informado');
+            const categoria = sanitizeHTML(livro.categoria_nome);
+            
+            const cores = [
+                'linear-gradient(135deg, #2E7D32, #4CAF50)',
+                'linear-gradient(135deg, #1565C0, #1976D2)',
+                'linear-gradient(135deg, #6A1B9A, #8E24AA)',
+                'linear-gradient(135deg, #C62828, #D32F2F)',
+                'linear-gradient(135deg, #FF9800, #FF5722)',
+                'linear-gradient(135deg, #0097A7, #00BCD4)'
+            ];
+            const corIndex = livro.id % cores.length;
+            
+            return `
+                <div class="book-item" data-id="${livro.id}">
+                    <span class="book-badge"><i class="fas fa-star"></i> Destaque</span>
+                    <div class="book-cover">
+                        <div class="book-front" style="background: ${cores[corIndex]}">
+                            <i class="fas fa-book book-icon"></i>
+                            <div class="book-title">${titulo}</div>
+                            <div class="book-author">${autor}</div>
+                        </div>
+                    </div>
+                    <div class="book-actions">
+                        <button class="btn btn-sm btn-primary" onclick="mostrarDetalhesLivro(${livro.id})">
+                            <i class="fas fa-info"></i>
+                        </button>
+                        <button class="btn btn-sm btn-success" onclick="baixarLivroDireto(${livro.id}, '${titulo.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="book-category">
+                        <span class="badge">${categoria || 'Sem categoria'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Exibir livros em destaque
+        function exibirLivrosDestaque() {
+            const container = document.getElementById('destaques-container');
+            
+            if (!livrosDestaque || livrosDestaque.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 1.5rem;">
+                        <i class="fas fa-book fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Nenhum livro disponível no momento</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const livrosParaExibir = livrosDestaque.slice(0, 6);
+            container.innerHTML = '';
+            
+            livrosParaExibir.forEach(livro => {
+                const livroCard = document.createElement('div');
+                livroCard.className = 'book-item';
+                livroCard.setAttribute('data-id', livro.id);
+                livroCard.innerHTML = templateLivroPrateleira(livro);
+                container.appendChild(livroCard);
+            });
+            
+            console.log(`Exibindo ${livrosParaExibir.length} livros em destaque`);
+            
+            if (livrosParaExibir.length < 6) {
+                const mensagem = document.createElement('div');
+                mensagem.style.gridColumn = '1 / -1';
+                mensagem.style.textAlign = 'center';
+                mensagem.style.marginTop = '1rem';
+                mensagem.innerHTML = `
+                    <p class="small text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Mostrando ${livrosParaExibir.length} de 6 livros em destaque
+                    </p>
+                `;
+                container.appendChild(mensagem);
+            }
+        }
+
+        // Baixar livro diretamente
+        function baixarLivroDireto(livroId, titulo) {
+            const livro = livrosDestaque.find(l => l.id === livroId);
+            if (livro && livro.arquivo_pdf) {
+                registrarDownload(livroId, titulo);
+                window.open(`/uploads/pdfs/${encodeURIComponent(livro.arquivo_pdf)}`, '_blank');
+            } else {
+                alertify.error('Arquivo não disponível para download');
+            }
+        }
+
+        // MOSTRAR DETALHES DO LIVRO
+        async function mostrarDetalhesLivro(livroId) {
+            try {
+                const livro = livrosDestaque.find(l => l.id === livroId);
+                if (!livro) {
+                    throw new Error('Livro não encontrado.');
+                }
+                
+                livroModalAtual = livro;
+                
+                const modal = new bootstrap.Modal(document.getElementById('livroModal'));
+                document.getElementById('modalLivroTitulo').textContent = sanitizeHTML(livro.titulo);
+                document.getElementById('modalLivroAutor').textContent = sanitizeHTML(livro.autor_nome || 'Não informado');
+                document.getElementById('modalLivroProfessor').textContent = sanitizeHTML(livro.professor_nome || 'Não informado');
+                document.getElementById('modalLivroCategoria').textContent = sanitizeHTML(livro.categoria_nome || 'Não informada');
+                document.getElementById('modalLivroData').textContent = new Date(livro.criado_em || Date.now()).toLocaleDateString('pt-BR');
+                document.getElementById('modalLivroDownloads').textContent = (livro.downloads || 0).toLocaleString();
+                document.getElementById('modalLivroDescricao').textContent = sanitizeHTML(livro.descricao || 'Nenhuma descrição detalhada disponível.');
+                
+                const btnDownload = document.getElementById('btn-download-modal');
+                btnDownload.onclick = function() {
+                    if (livro && livro.arquivo_pdf) {
+                        registrarDownload(livro.id, livro.titulo);
+                        window.open(`/uploads/pdfs/${encodeURIComponent(livro.arquivo_pdf)}`, '_blank');
+                        bootstrap.Modal.getInstance(document.getElementById('livroModal')).hide();
+                    }
+                };
+                
+                modal.show();
+                
+            } catch (error) {
+                console.error('Erro ao mostrar detalhes do livro:', error);
+                alertify.error('Não foi possível carregar os detalhes do livro');
+            }
+        }
+
+        // ADICIONAR AOS FAVORITOS
+        function adicionarFavoritoModal() {
+            if (livroModalAtual) {
+                const titulo = sanitizeHTML(livroModalAtual.titulo);
+                
+                if (!favoritos.find(f => f.id === livroModalAtual.id)) {
+                    favoritos.push({
+                        id: livroModalAtual.id,
+                        titulo: titulo,
+                        autor: sanitizeHTML(livroModalAtual.autor_nome),
+                        categoria: sanitizeHTML(livroModalAtual.categoria_nome),
+                        data: new Date().toLocaleDateString('pt-BR')
+                    });
+                    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+                    alertify.success(`"${titulo}" adicionado aos favoritos`);
+                    
+                    bootstrap.Modal.getInstance(document.getElementById('livroModal')).hide();
+                } else {
+                    alertify.message('Livro já está nos favoritos');
+                }
+            }
+        }
+
+        // Registrar download
+        async function registrarDownload(livroId, titulo) {
+            try {
+                const novoDownload = {
+                    id: livroId,
+                    titulo: sanitizeHTML(titulo),
+                    data: new Date().toLocaleString('pt-BR'),
+                    timestamp: Date.now()
+                };
+                
+                meusDownloads.unshift(novoDownload);
+                localStorage.setItem('meusDownloads', JSON.stringify(meusDownloads.slice(0, 50)));
+                
+                await fetch(`/api/livros/${livroId}/download`, { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                carregarAtividadeRecente();
+                
+                alertify.success(`Download registrado: ${sanitizeHTML(titulo)}`);
+            } catch (error) {
+                console.error('Erro ao registrar download:', error);
+                alertify.error('Erro ao registrar download, mas o arquivo será baixado');
+            }
+        }
+
+        // Carregar atividade recente
+        function carregarAtividadeRecente() {
+            const activityList = document.getElementById('recent-activity-list');
+            
+            activityList.innerHTML = '';
+            
+            if (meusDownloads.length > 0) {
+                meusDownloads.slice(0, 3).forEach(download => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+                    activityItem.innerHTML = `
+                        <div class="activity-title">
+                            <i class="fas fa-download text-primary"></i>
+                            <span class="text-truncate">${sanitizeHTML(download.titulo)}</span>
+                        </div>
+                        <div class="activity-time">${sanitizeHTML(download.data)}</div>
+                    `;
+                    activityList.appendChild(activityItem);
+                });
+            } else {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.innerHTML = `
+                    <div class="activity-title">
+                        <i class="fas fa-info-circle text-primary"></i>
+                        Bem-vindo à Biblioteca Virtual
+                    </div>
+                    <div class="activity-time">Agora mesmo</div>
+                `;
+                activityList.appendChild(activityItem);
+            }
+        }
+
+        // FUNÇÕES DO SISTEMA
+        async function logout() {
+            alertify.confirm('Confirmação', 'Deseja realmente sair da sua conta?', 
+                async function() {
+                    try {
+                        await fetch('/logout', { method: 'POST' });
+                        window.location.href = '/';
+                    } catch (error) {
+                        console.error('Erro no logout:', error);
+                        window.location.href = '/';
+                    }
+                }, 
+                function() {
+                    alertify.message('Logout cancelado');
+                }
+            );
+        }
+
+        function mostrarMeusDownloads() {
+            if (meusDownloads.length === 0) {
+                alertify.alert('Meus Downloads', 'Você ainda não realizou nenhum download.');
+                return;
+            }
+            
+            const downloadsHTML = meusDownloads.slice(0, 10).map(d => `
+                <div class="border-bottom pb-2 mb-2">
+                    <strong>${sanitizeHTML(d.titulo)}</strong><br>
+                    <small class="text-muted">${sanitizeHTML(d.data)}</small>
+                </div>
+            `).join('');
+            
+            alertify.alert('Meus Downloads', downloadsHTML);
+        }
+
+        function mostrarFavoritos() {
+            if (favoritos.length === 0) {
+                alertify.alert('Meus Favoritos', 'Você ainda não tem livros favoritos.');
+                return;
+            }
+            
+            const favoritosHTML = favoritos.map(f => `
+                <div class="border-bottom pb-2 mb-2">
+                    <strong>${sanitizeHTML(f.titulo)}</strong><br>
+                    <small class="text-muted">${sanitizeHTML(f.autor)} - ${sanitizeHTML(f.categoria)}</small><br>
+                    <small class="text-muted">Adicionado em: ${sanitizeHTML(f.data)}</small>
+                </div>
+            `).join('');
+            
+            alertify.alert('Meus Favoritos', favoritosHTML);
+        }
+
+        function mostrarSobre() {
+            alertify.alert('Sobre o Sistema', `
+                <div class="text-center p-3">
+                    <i class="fas fa-book-open fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold text-primary mb-3">Biblioteca Virtual ISPP-LUENA</h4>
+                    <p>Sistema de gestão de acervo acadêmico desenvolvido para a comunidade estudantil.</p>
+                    <p><strong>Versão:</strong> 2.0.0</p>
+                    <p><strong>Desenvolvido por:</strong> Equipe de Desenvolvimento Acadêmico</p>
+                    <p class="text-muted mt-3">© 2024 - Todos os direitos reservados.</p>
+                </div>
+            `);
+        }
+
+        function mostrarContato() {
+            alertify.alert('Contato', `
+                <div class="p-3">
+                    <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold text-primary mb-3">Suporte Técnico</h4>
+                    <div class="mb-3">
+                        <p><strong><i class="fas fa-envelope text-primary me-2"></i>Email:</strong> suporte@bibliotecavirtual.com</p>
+                        <p><strong><i class="fas fa-phone text-primary me-2"></i>Telefone:</strong> (11) 9999-8888</p>
+                        <p><strong><i class="fas fa-clock text-primary me-2"></i>Horário:</strong> Segunda a Sexta, 9h às 18h</p>
+                    </div>
+                    <hr>
+                    <p class="text-muted">Para suporte técnico, entre em contato pelo email acima ou pelo telefone durante o horário comercial.</p>
+                </div>
+            `);
+        }
+
+        function mostrarPolitica() {
+            alertify.alert('Política de Uso', `
+                <div class="p-3">
+                    <h4 class="fw-bold text-primary mb-3">Termos de Uso</h4>
+                    <p>1. O uso da biblioteca virtual é restrito a estudantes cadastrados.</p>
+                    <p>2. Os materiais são para uso acadêmico exclusivamente.</p>
+                    <p>3. É proibida a redistribuição dos conteúdos sem autorização.</p>
+                    <p>4. O sistema mantém registro de downloads para fins estatísticos.</p>
+                    <p>5. Reporte qualquer problema técnico ao suporte.</p>
+                    <hr>
+                    <p class="text-muted small">Ao utilizar o sistema, você concorda com estes termos.</p>
+                </div>
+            `);
+        }
+
+        function realizarBusca() {
+            const busca = document.getElementById('search-input').value.trim();
+            if (busca) {
+                sessionStorage.setItem('buscaTermo', busca);
+                window.location.href = 'acervo.html';
+            } else {
+                window.location.href = 'acervo.html';
+            }
+        }
+
+        // Busca ao pressionar Enter
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                realizarBusca();
+            }
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadUserInfo();
+            await carregarEstatisticas();
+            await carregarLivrosDestaque();
+            
+            setTimeout(() => {
+                alertify.success('Bem-vindo à Biblioteca Virtual!');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

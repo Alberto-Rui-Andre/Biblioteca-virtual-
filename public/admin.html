@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual - Painel Administrativo</title>
+    
+    <!-- Bootstrap e Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <style>
+        /* VARIÁVEIS DE CORES */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-success: #27ae60;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-primary-dark: #1B5E20;
+        }
+
+        /* BACKGROUND BRANCO PURO */
+        body {
+            background-color: var(--color-white);
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER FIXO - COM NAVBAR (ESTERILIZADO) */
+        .main-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        /* NAVBAR ESTERILIZADA */
+        .navbar-custom {
+            background: transparent !important;
+            padding: 0.5rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 5px;
+            background-color: white;
+            padding: 2px;
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.2;
+        }
+
+        /* LINKS DA NAVBAR */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            margin: 0 0.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link i {
+            font-size: 0.9rem;
+        }
+
+        /* DROPDOWN DO USUÁRIO */
+        .dropdown-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white !important;
+            padding: 0.4rem 0.8rem !important;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dropdown-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown-menu {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-item i {
+            width: 1rem;
+            text-align: center;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: var(--color-white);
+        }
+
+        /* HERO SECTION */
+        .admin-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: white;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .admin-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* GARANTIR MÍNIMO DE 2 ESTATÍSTICAS POR LINHA */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+            }
+            
+            .stat-card {
+                min-width: 140px;
+                padding: 0.6rem;
+            }
+            
+            .stat-number {
+                font-size: 1rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            padding: 0.75rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* TABS COMPACTADOS - 3 POR LINHA NO MOBILE */
+        .admin-tabs-container {
+            background: var(--color-white);
+            padding: 0.75rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .admin-tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.5rem;
+        }
+
+        /* 3 TABS POR LINHA NO MOBILE */
+        @media (max-width: 768px) {
+            .admin-tabs-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .admin-tabs-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.4rem;
+            }
+            
+            .admin-tab-btn {
+                min-height: 32px;
+                font-size: 0.75rem;
+                padding: 0.4rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-tabs-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.3rem;
+            }
+            
+            .admin-tab-btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.4rem;
+            }
+            
+            .admin-tab-btn i {
+                font-size: 0.8rem;
+                margin-right: 0.2rem;
+            }
+        }
+
+        .admin-tab-btn {
+            background: var(--color-light-gray);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-main);
+            padding: 0.5rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-weight: 500;
+            min-height: 36px;
+        }
+
+        .admin-tab-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .admin-tab-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* CONTEÚDO DAS TABS */
+        .admin-tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        /* TABELAS COMPACTADAS */
+        .dashboard-table-container {
+            background: var(--color-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .dashboard-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: 0.6rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .dashboard-table td {
+            padding: 0.6rem;
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: middle;
+        }
+
+        .dashboard-table tr:hover {
+            background: rgba(46, 125, 50, 0.05);
+        }
+
+        /* FORMULÁRIOS COMPACTADOS */
+        .dashboard-form-container {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .dashboard-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dashboard-form-group {
+            position: relative;
+        }
+
+        .dashboard-form-group label {
+            display: block;
+            margin-bottom: 0.2rem;
+            color: var(--color-text-main);
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dashboard-form-group input,
+        .dashboard-form-group select,
+        .dashboard-form-group textarea {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            background: var(--color-light-gray);
+            color: var(--color-text-main);
+            font-family: inherit;
+        }
+
+        .dashboard-form-group input:focus,
+        .dashboard-form-group select:focus,
+        .dashboard-form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: white;
+        }
+
+        .dashboard-form-group i {
+            margin-right: 0.4rem;
+            color: var(--color-text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .dashboard-form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* BOTÕES COMPACTADOS */
+        .dashboard-btn {
+            padding: 0.4rem 0.75rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+        }
+
+        .dashboard-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(46, 125, 50, 0.3);
+        }
+
+        .dashboard-btn-danger {
+            background: var(--color-danger);
+        }
+
+        .dashboard-btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .dashboard-btn-edit {
+            background: var(--color-warning);
+        }
+
+        .dashboard-btn-edit:hover {
+            background: #d68910;
+        }
+
+        .dashboard-btn-success {
+            background: var(--color-success);
+        }
+
+        .dashboard-btn-success:hover {
+            background: #219653;
+        }
+
+        .dashboard-btn-secondary {
+            background: var(--color-secondary);
+            color: #333;
+        }
+
+        .dashboard-btn-secondary:hover {
+            background: #fbc02d;
+        }
+
+        /* BADGES */
+        .dashboard-badge {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .dashboard-badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .dashboard-badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .dashboard-badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .dashboard-badge-estudante {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .dashboard-badge-professor {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .dashboard-badge-visitante {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* MENSAGENS */
+        .dashboard-message {
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeIn 0.5s ease;
+            font-size: 0.75rem;
+        }
+
+        .dashboard-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .dashboard-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* LOADING */
+        .dashboard-loading {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--color-text-secondary);
+            font-size: 0.8rem;
+            background: var(--color-white);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-loading i {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+            animation: spin 1s linear infinite;
+        }
+
+        /* EMPTY STATE */
+        .dashboard-empty-state {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--color-text-secondary);
+            background: var(--color-white);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin: 0.5rem 0;
+        }
+
+        .dashboard-empty-state i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* RODAPÉ */
+        .footer-main {
+            background: var(--color-primary-dark);
+            color: white;
+            margin-top: auto;
+            padding: 1rem 0 !important;
+            font-size: 0.85rem;
+        }
+        
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: #FFD54F;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* NAVBAR RESPONSIVA ADICIONAL */
+        @media (max-width: 380px) {
+            .navbar-nav .nav-link span:not(.fa) {
+                display: none;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.5rem;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+            
+            .dropdown-toggle span {
+                display: none;
+            }
+            
+            .dropdown-toggle {
+                padding: 0.5rem !important;
+                width: 40px;
+                height: 40px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER COM NAVBAR (ESTERILIZADO) -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="admin.html">
+                    <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+                    <div class="logo-text">
+                        <div class="logo-title">ISPP-LUENA</div>
+                        <div class="logo-subtitle">Painel Administrativo</div>
+                    </div>
+                </a>
+                
+                <!-- BOTÃO TOGGLER PARA MOBILE -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- MENU -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="admin.html">
+                                <i class="fas fa-home"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="openTab('usuarios')">
+                                <i class="fas fa-users"></i> <span>Usuários</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="openTab('professores')">
+                                <i class="fas fa-chalkboard-teacher"></i> <span>Professores</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="openTab('livros')">
+                                <i class="fas fa-book"></i> <span>Livros</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="openTab('autores')">
+                                <i class="fas fa-user-edit"></i> <span>Autores</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="openTab('categorias')">
+                                <i class="fas fa-folder"></i> <span>Categorias</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- USUÁRIO -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> <span id="user-name">Administrador</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#" onclick="redefinirSenha()">
+                                    <i class="fas fa-key"></i> Redefinir Senha
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="mostrarSobre()">
+                                    <i class="fas fa-info-circle"></i> Sobre
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="mostrarContato()">
+                                    <i class="fas fa-headset"></i> Contato
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i> Sair
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- HERO SECTION -->
+        <section class="admin-hero">
+            <h1 class="admin-title">Painel Administrativo</h1>
+            <p class="admin-subtitle">
+                Gerencie usuários, professores, livros, autores e categorias do sistema.
+            </p>
+            
+            <!-- ESTATÍSTICAS EM QUADRADOS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="total-usuarios">0</div>
+                    <div class="stat-label">Usuários</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number" id="total-estudantes">0</div>
+                    <div class="stat-label">Estudantes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-number" id="total-professores">0</div>
+                    <div class="stat-label">Professores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-number" id="total-livros">0</div>
+                    <div class="stat-label">Livros</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABS NAVIGATION -->
+        <div class="admin-tabs-container">
+            <div class="admin-tabs-grid">
+                <button class="admin-tab-btn active" onclick="openTab('dashboard')">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('usuarios')">
+                    <i class="fas fa-users"></i> Usuários
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('professores')">
+                    <i class="fas fa-chalkboard-teacher"></i> Professores
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('livros')">
+                    <i class="fas fa-book"></i> Livros
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('autores')">
+                    <i class="fas fa-user-edit"></i> Autores
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('categorias')">
+                    <i class="fas fa-folder"></i> Categorias
+                </button>
+                <button class="admin-tab-btn" onclick="openTab('cadastrar-livro')">
+                    <i class="fas fa-plus-circle"></i> Cad. Livro
+                </button>
+            </div>
+        </div>
+
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="admin-tab-content active">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <h4 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Visão Geral do Sistema</h4>
+                    <p class="text-muted small mb-4">Estatísticas atualizadas do sistema.</p>
+                    
+                    <div class="stats-grid mb-4">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-number" id="dashboard-total-usuarios">0</div>
+                            <div class="stat-label">Total Usuários</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="stat-number" id="dashboard-total-estudantes">0</div>
+                            <div class="stat-label">Estudantes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="stat-number" id="dashboard-total-professores">0</div>
+                            <div class="stat-label">Professores</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="stat-number" id="dashboard-total-livros">0</div>
+                            <div class="stat-label">Livros</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <h4 class="mb-3"><i class="fas fa-history me-2"></i>Atividade Recente</h4>
+                    <div id="atividade-recente">
+                        <div class="dashboard-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Carregando atividade recente...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUÁRIOS TAB -->
+        <div id="usuarios" class="admin-tab-content">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-users me-2"></i>Gestão de Usuários</h4>
+                    </div>
+                    <p class="text-muted small mb-3">Gerencie estudantes e visitantes do sistema.</p>
+                    
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Matrícula</th>
+                                <th>Tipo</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-tbody">
+                            <tr>
+                                <td colspan="6" class="dashboard-empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p class="mt-2">Carregando usuários...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFESSORES TAB -->
+        <div id="professores" class="admin-tab-content">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>Gestão de Professores</h4>
+                        <button class="dashboard-btn" onclick="limparFormularioProfessor()">
+                            <i class="fas fa-plus"></i> Novo Professor
+                        </button>
+                    </div>
+                    <p class="text-muted small mb-3">Gerencie os professores do sistema.</p>
+                    
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Nº Agente</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="professores-tbody">
+                            <tr>
+                                <td colspan="5" class="dashboard-empty-state">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <p class="mt-2">Carregando professores...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-form-container">
+                <h4 class="mb-3"><i class="fas fa-user-plus me-2"></i>Cadastrar/Editar Professor</h4>
+                <form id="cadastrar-professor-form">
+                    <input type="hidden" name="id" id="professor-id">
+                    <div class="dashboard-form-grid">
+                        <div class="dashboard-form-group">
+                            <label for="professor-nome"><i class="fas fa-user"></i> Nome completo *</label>
+                            <input type="text" id="professor-nome" name="nome" placeholder="Nome completo" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="professor-numero_agente"><i class="fas fa-id-card"></i> Nº Agente *</label>
+                            <input type="text" id="professor-numero_agente" name="numero_agente" placeholder="Número de agente" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="professor-email"><i class="fas fa-envelope"></i> Email *</label>
+                            <input type="email" id="professor-email" name="email" placeholder="email@exemplo.com" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="professor-senha"><i class="fas fa-lock"></i> Senha</label>
+                            <input type="password" id="professor-senha" name="senha" placeholder="Deixe em branco para senha padrão">
+                            <small class="text-muted">Senha padrão: 123456</small>
+                        </div>
+                    </div>
+                    <div class="dashboard-form-actions">
+                        <button class="dashboard-btn" type="submit" id="professor-submit-btn">
+                            <i class="fas fa-save"></i> Salvar Professor
+                        </button>
+                        <button class="dashboard-btn dashboard-btn-secondary" type="button" onclick="limparFormularioProfessor()">
+                            <i class="fas fa-broom"></i> Limpar
+                        </button>
+                    </div>
+                </form>
+                <div id="professor-msg"></div>
+            </div>
+        </div>
+
+        <!-- LIVROS TAB -->
+        <div id="livros" class="admin-tab-content">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-book me-2"></i>Gestão de Livros</h4>
+                        <button class="dashboard-btn" onclick="openTab('cadastrar-livro')">
+                            <i class="fas fa-plus"></i> Novo Livro
+                        </button>
+                    </div>
+                    <p class="text-muted small mb-3">Gerencie todos os livros do sistema.</p>
+                    
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Professor</th>
+                                <th>Categoria</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="livros-tbody">
+                            <tr>
+                                <td colspan="6" class="dashboard-empty-state">
+                                    <i class="fas fa-book"></i>
+                                    <p class="mt-2">Carregando livros...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUTORES TAB -->
+        <div id="autores" class="admin-tab-content">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Gestão de Autores</h4>
+                        <button class="dashboard-btn" onclick="limparFormularioAutor()">
+                            <i class="fas fa-plus"></i> Novo Autor
+                        </button>
+                    </div>
+                    <p class="text-muted small mb-3">Gerencie os autores do sistema.</p>
+                    
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Nacionalidade</th>
+                                <th>Data Nasc.</th>
+                                <th>Total Livros</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="autores-tbody">
+                            <tr>
+                                <td colspan="5" class="dashboard-empty-state">
+                                    <i class="fas fa-user-edit"></i>
+                                    <p class="mt-2">Carregando autores...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-form-container">
+                <h4 class="mb-3"><i class="fas fa-user-plus me-2"></i>Cadastrar/Editar Autor</h4>
+                <form id="cadastrar-autor-form">
+                    <input type="hidden" name="id" id="autor-id">
+                    <div class="dashboard-form-grid">
+                        <div class="dashboard-form-group">
+                            <label for="autor-nome"><i class="fas fa-user"></i> Nome do Autor *</label>
+                            <input type="text" id="autor-nome" name="nome" placeholder="Nome completo" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="autor-nacionalidade"><i class="fas fa-globe"></i> Nacionalidade</label>
+                            <input type="text" id="autor-nacionalidade" name="nacionalidade" placeholder="Ex: Portuguesa">
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="autor-data_nascimento"><i class="fas fa-calendar"></i> Data Nascimento</label>
+                            <input type="date" id="autor-data_nascimento" name="data_nascimento">
+                        </div>
+                    </div>
+                    <div class="dashboard-form-group mb-3">
+                        <label for="autor-biografia"><i class="fas fa-file-alt"></i> Biografia</label>
+                        <textarea id="autor-biografia" name="biografia" rows="3" placeholder="Biografia do autor..."></textarea>
+                    </div>
+                    <div class="dashboard-form-actions">
+                        <button class="dashboard-btn" type="submit" id="autor-submit-btn">
+                            <i class="fas fa-save"></i> Salvar Autor
+                        </button>
+                        <button class="dashboard-btn dashboard-btn-secondary" type="button" onclick="limparFormularioAutor()">
+                            <i class="fas fa-broom"></i> Limpar
+                        </button>
+                    </div>
+                </form>
+                <div id="autor-msg"></div>
+            </div>
+        </div>
+
+        <!-- CATEGORIAS TAB -->
+        <div id="categorias" class="admin-tab-content">
+            <div class="dashboard-table-container">
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-folder me-2"></i>Gestão de Categorias</h4>
+                        <button class="dashboard-btn" onclick="limparFormularioCategoria()">
+                            <i class="fas fa-plus"></i> Nova Categoria
+                        </button>
+                    </div>
+                    <p class="text-muted small mb-3">Gerencie as categorias de livros do sistema.</p>
+                    
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Total Livros</th>
+                                <th>Data Criação</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categorias-tbody">
+                            <tr>
+                                <td colspan="5" class="dashboard-empty-state">
+                                    <i class="fas fa-folder"></i>
+                                    <p class="mt-2">Carregando categorias...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-form-container">
+                <h4 class="mb-3"><i class="fas fa-folder-plus me-2"></i>Cadastrar/Editar Categoria</h4>
+                <form id="cadastrar-categoria-form">
+                    <input type="hidden" name="id" id="categoria-id">
+                    <div class="dashboard-form-grid">
+                        <div class="dashboard-form-group">
+                            <label for="categoria-nome"><i class="fas fa-tag"></i> Nome da Categoria *</label>
+                            <input type="text" id="categoria-nome" name="nome" placeholder="Nome da categoria" required>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="categoria-descricao"><i class="fas fa-align-left"></i> Descrição</label>
+                            <input type="text" id="categoria-descricao" name="descricao" placeholder="Descrição da categoria">
+                        </div>
+                    </div>
+                    <div class="dashboard-form-actions">
+                        <button class="dashboard-btn" type="submit" id="categoria-submit-btn">
+                            <i class="fas fa-save"></i> Salvar Categoria
+                        </button>
+                        <button class="dashboard-btn dashboard-btn-secondary" type="button" onclick="limparFormularioCategoria()">
+                            <i class="fas fa-broom"></i> Limpar
+                        </button>
+                    </div>
+                </form>
+                <div id="categoria-msg"></div>
+            </div>
+        </div>
+
+        <!-- CADASTRAR LIVRO TAB -->
+        <div id="cadastrar-livro" class="admin-tab-content">
+            <div class="dashboard-form-container">
+                <h4 class="mb-3"><i class="fas fa-plus-circle me-2"></i>Cadastrar Novo Livro</h4>
+                <p class="text-muted small mb-3">Cadastre novos livros no sistema.</p>
+                
+                <form id="cadastrar-livro-form" enctype="multipart/form-data">
+                    <div class="dashboard-form-grid">
+                        <div class="dashboard-form-group">
+                            <label for="admin-titulo"><i class="fas fa-heading"></i> Título *</label>
+                            <input type="text" id="admin-titulo" name="titulo" required placeholder="Título do livro">
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="admin-id_autor"><i class="fas fa-user-edit"></i> Autor *</label>
+                            <select id="admin-id_autor" name="id_autor" required>
+                                <option value="">Selecione um autor</option>
+                            </select>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="admin-id_categoria"><i class="fas fa-folder"></i> Categoria *</label>
+                            <select id="admin-id_categoria" name="id_categoria" required>
+                                <option value="">Selecione uma categoria</option>
+                            </select>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="admin-id_professor"><i class="fas fa-chalkboard-teacher"></i> Professor (opcional)</label>
+                            <select id="admin-id_professor" name="id_professor">
+                                <option value="">Selecione um professor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dashboard-form-group mb-3">
+                        <label for="admin-descricao"><i class="fas fa-file-alt"></i> Descrição</label>
+                        <textarea id="admin-descricao" name="descricao" rows="3" placeholder="Breve descrição do livro..."></textarea>
+                    </div>
+                    <div class="dashboard-form-grid">
+                        <div class="dashboard-form-group">
+                            <label for="admin-arquivo_pdf"><i class="fas fa-file-pdf"></i> Arquivo PDF *</label>
+                            <input type="file" id="admin-arquivo_pdf" name="arquivo_pdf" accept=".pdf" required>
+                            <small class="text-muted">Apenas arquivos PDF são aceitos (máx. 10MB)</small>
+                        </div>
+                        <div class="dashboard-form-group">
+                            <label for="admin-capa"><i class="fas fa-image"></i> Capa (opcional)</label>
+                            <input type="file" id="admin-capa" name="capa" accept="image/*">
+                            <small class="text-muted">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+                        </div>
+                    </div>
+                    <div class="dashboard-form-actions">
+                        <button class="dashboard-btn" type="submit" id="livro-submit-btn">
+                            <i class="fas fa-save"></i> Cadastrar Livro
+                        </button>
+                        <button class="dashboard-btn dashboard-btn-secondary" type="button" onclick="limparFormularioLivro()">
+                            <i class="fas fa-broom"></i> Limpar
+                        </button>
+                        <button class="dashboard-btn dashboard-btn-success" type="button" onclick="recarregarCategorias()">
+                            <i class="fas fa-redo"></i> Recarregar Categorias
+                        </button>
+                    </div>
+                </form>
+                <div id="admin-livro-msg"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <img src="/img/descarregar.png" alt="ISPP Luena" class="footer-logo">
+                <div class="mb-1">ISPP-LUENA - Painel Administrativo</div>
+                <div class="footer-links">
+                    <a href="#" onclick="mostrarSobre()">Sobre</a>
+                    <a href="#" onclick="mostrarContato()">Contato</a>
+                    <a href="#" onclick="redefinirSenha()">Redefinir Senha</a>
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-envelope me-1"></i>admin@ispp.co.ao
+                    <span class="mx-2">|</span>
+                    <i class="fas fa-phone me-1"></i>+244 XXX XX XX XX
+                </div>
+                <div class="mt-2">
+                    &copy; <span id="current-year"></span> ISPP-LUENA
+                    <br>
+                    <small class="opacity-75">Sistema de Gestão Acadêmica</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
+    <script>
+        // CONFIGURAÇÃO INICIAL
+        alertify.defaults.glossary.title = 'Biblioteca - Admin';
+        alertify.defaults.notifier.position = 'top-right';
+        alertify.defaults.transition = 'fade';
+
+        // VARIÁVEIS GLOBAIS
+        let categoriasCache = [];
+        let autoresCache = [];
+        let professoresCache = [];
+        let editandoProfessorId = null;
+        let editandoAutorId = null;
+        let editandoCategoriaId = null;
+
+        // Ano atual no footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // SANITIZAÇÃO
+        function sanitizeHTML(str) {
+            if (typeof str !== 'string') return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // FUNÇÕES PRINCIPAIS
+        async function carregarUserInfo() {
+            try {
+                const response = await fetch('/api/user-info');
+                if (response.ok) {
+                    const user = await response.json();
+                    const nomeSanitizado = sanitizeHTML(user.nome || 'Administrador');
+                    document.getElementById('user-name').textContent = nomeSanitizado;
+                }
+            } catch (error) {
+                console.log('Erro ao carregar informações do usuário:', error);
+            }
+        }
+
+        async function logout() {
+            alertify.confirm('Confirmação', 'Deseja realmente sair da sua conta?', 
+                async function() {
+                    try {
+                        const res = await fetch('/logout', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        
+                        if (res.ok) {
+                            window.location.href = '/';
+                        } else {
+                            window.location.href = '/';
+                        }
+                    } catch (error) {
+                        window.location.href = '/';
+                    }
+                }, 
+                function() {
+                    alertify.message('Saída cancelada');
+                }
+            );
+        }
+
+        function openTab(tabName) {
+            // Esconder todas as tabs
+            document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+
+            // Atualizar botões de tab
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            const tabButtons = document.querySelectorAll(`.admin-tab-btn[onclick="openTab('${tabName}')"]`);
+            tabButtons.forEach(btn => btn.classList.add('active'));
+
+            // Atualizar menu da navbar
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => link.classList.remove('active'));
+            const navLinks = document.querySelectorAll(`.navbar-nav .nav-link[onclick*="${tabName}"]`);
+            navLinks.forEach(link => link.classList.add('active'));
+
+            // Carregar dados específicos da tab
+            if (tabName === 'usuarios') {
+                carregarUsuarios();
+            } else if (tabName === 'professores') {
+                carregarProfessores();
+            } else if (tabName === 'livros') {
+                carregarLivrosAdmin();
+            } else if (tabName === 'autores') {
+                carregarAutoresAdmin();
+            } else if (tabName === 'categorias') {
+                carregarCategoriasAdmin();
+            } else if (tabName === 'cadastrar-livro') {
+                carregarDadosCadastroLivro();
+            } else if (tabName === 'dashboard') {
+                carregarDashboard();
+            }
+        }
+
+        async function carregarEstatisticas() {
+            try {
+                let data;
+                try {
+                    const res = await fetch("/admin/api/estatisticas");
+                    if (!res.ok) throw new Error('API não disponível');
+                    data = await res.json();
+                } catch (error) {
+                    console.warn('API de estatísticas não disponível');
+                    data = {
+                        totalUsuarios: 0,
+                        totalEstudantes: 0,
+                        totalProfessores: 0,
+                        totalLivros: 0
+                    };
+                }
+                
+                // Atualizar hero stats
+                document.getElementById("total-usuarios").textContent = data.totalUsuarios;
+                document.getElementById("total-estudantes").textContent = data.totalEstudantes;
+                document.getElementById("total-professores").textContent = data.totalProfessores;
+                document.getElementById("total-livros").textContent = data.totalLivros;
+                
+                // Atualizar dashboard stats
+                document.getElementById("dashboard-total-usuarios").textContent = data.totalUsuarios;
+                document.getElementById("dashboard-total-estudantes").textContent = data.totalEstudantes;
+                document.getElementById("dashboard-total-professores").textContent = data.totalProfessores;
+                document.getElementById("dashboard-total-livros").textContent = data.totalLivros;
+            } catch (err) {
+                console.error("Erro ao carregar estatísticas:", err);
+            }
+        }
+
+        async function carregarDashboard() {
+            await carregarEstatisticas();
+            await carregarAtividadeRecente();
+        }
+
+        async function carregarAtividadeRecente() {
+            try {
+                const response = await fetch('/admin/api/atividade-recente');
+                if (response.ok) {
+                    const atividade = await response.json();
+                    exibirAtividadeRecente(atividade);
+                } else {
+                    exibirAtividadeRecente([]);
+                }
+            } catch (error) {
+                console.log('Erro ao carregar atividade recente:', error);
+                exibirAtividadeRecente([]);
+            }
+        }
+
+        function exibirAtividadeRecente(atividade) {
+            const container = document.getElementById('atividade-recente');
+            
+            if (!atividade || atividade.length === 0) {
+                container.innerHTML = '<div class="dashboard-empty-state">Nenhuma atividade recente</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${atividade.map(item => `
+                            <tr>
+                                <td>📊</td>
+                                <td>${sanitizeHTML(item.descricao)}</td>
+                                <td>${new Date(item.data).toLocaleDateString('pt-BR')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        async function carregarUsuarios() {
+            try {
+                const tbody = document.getElementById("usuarios-tbody");
+                tbody.innerHTML = '<tr><td colspan="6" class="dashboard-empty-state">Carregando usuários...</td></tr>';
+                
+                let data;
+                try {
+                    const res = await fetch("/admin/api/usuarios");
+                    if (!res.ok) throw new Error('API não disponível');
+                    data = await res.json();
+                } catch (error) {
+                    console.warn('API de usuários não disponível');
+                    data = [];
+                }
+
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="dashboard-empty-state">
+                                <i class="fas fa-users"></i>
+                                <p class="mt-2">Nenhum usuário cadastrado</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+
+                data
+                    .filter(u => u.tipo === 'estudante' || u.tipo === 'visitante')
+                    .forEach(u => {
+                        const tr = document.createElement("tr");
+                        tr.dataset.id = u.id;
+                        const tipoBadge = u.tipo === 'estudante' ? 
+                            '<span class="dashboard-badge-estudante">🎓 Estudante</span>' :
+                            '<span class="dashboard-badge-visitante">👤 Visitante</span>';
+                        
+                        tr.innerHTML = `
+                            <td class="col-nome">${sanitizeHTML(u.nome || 'N/A')}</td>
+                            <td class="col-email">${sanitizeHTML(u.email || 'N/A')}</td>
+                            <td class="col-matricula">${sanitizeHTML(u.numero_matricula || '-')}</td>
+                            <td class="col-tipo">${tipoBadge}</td>
+                            <td class="col-data">${new Date(u.criado_em).toLocaleDateString('pt-BR')}</td>
+                            <td class="col-acoes">
+                                <button class="dashboard-btn dashboard-btn-edit me-1" onclick="editarUsuario(${u.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="dashboard-btn dashboard-btn-danger" onclick="removerUsuario(${u.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>`;
+                        tbody.appendChild(tr);
+                    });
+            } catch (err) {
+                console.error("Erro carregarUsuarios:", err);
+                const tbody = document.getElementById("usuarios-tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="dashboard-empty-state">
+                            <div style="color: #dc3545;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p class="mt-2">Erro ao carregar usuários</p>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function carregarProfessores() {
+            try {
+                const tbody = document.getElementById("professores-tbody");
+                tbody.innerHTML = '<tr><td colspan="5" class="dashboard-empty-state">Carregando professores...</td></tr>';
+                
+                let data;
+                try {
+                    const res = await fetch("/admin/api/professores");
+                    if (!res.ok) throw new Error('API não disponível');
+                    data = await res.json();
+                } catch (error) {
+                    console.warn('API de professores não disponível');
+                    data = [];
+                }
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="dashboard-empty-state">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <p class="mt-2">Nenhum professor cadastrado</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+
+                data.forEach(p => {
+                    const tr = document.createElement("tr");
+                    tr.dataset.id = p.id;
+                    tr.innerHTML = `
+                        <td class="col-nome">${sanitizeHTML(p.nome || 'N/A')}</td>
+                        <td class="col-email">${sanitizeHTML(p.email || 'N/A')}</td>
+                        <td class="col-agente">${sanitizeHTML(p.numero_agente || '-')}</td>
+                        <td class="col-data">${new Date(p.criado_em).toLocaleDateString('pt-BR')}</td>
+                        <td class="col-acoes">
+                            <button class="dashboard-btn dashboard-btn-edit me-1" onclick="editarProfessor(${p.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="dashboard-btn dashboard-btn-danger" onclick="removerProfessor(${p.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+
+                professoresCache = data;
+            } catch (err) {
+                console.error("Erro carregarProfessores:", err);
+                const tbody = document.getElementById("professores-tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="dashboard-empty-state">
+                            <div style="color: #dc3545;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p class="mt-2">Erro ao carregar professores</p>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function carregarLivrosAdmin() {
+            try {
+                const tbody = document.getElementById("livros-tbody");
+                tbody.innerHTML = '<tr><td colspan="6" class="dashboard-empty-state">Carregando livros...</td></tr>';
+                
+                let data;
+                try {
+                    const res = await fetch("/admin/api/livros");
+                    if (!res.ok) throw new Error('API não disponível');
+                    data = await res.json();
+                } catch (error) {
+                    console.warn('API de livros não disponível');
+                    data = [];
+                }
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="dashboard-empty-state">
+                                <i class="fas fa-book"></i>
+                                <p class="mt-2">Nenhum livro cadastrado</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+
+                data.forEach(livro => {
+                    const tr = document.createElement("tr");
+                    tr.dataset.id = livro.id;
+                    tr.innerHTML = `
+                        <td class="col-titulo">${sanitizeHTML(livro.titulo || 'N/A')}</td>
+                        <td class="col-autor">${sanitizeHTML(livro.autor_nome || '-')}</td>
+                        <td class="col-professor">${sanitizeHTML(livro.professor_nome || '-')}</td>
+                        <td class="col-categoria">${sanitizeHTML(livro.categoria_nome || '-')}</td>
+                        <td class="col-data">${new Date(livro.criado_em).toLocaleDateString('pt-BR')}</td>
+                        <td class="col-acoes">
+                            <button class="dashboard-btn dashboard-btn-danger" onclick="removerLivroAdmin(${livro.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Erro carregarLivros:", err);
+                const tbody = document.getElementById("livros-tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="dashboard-empty-state">
+                            <div style="color: #dc3545;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p class="mt-2">Erro ao carregar livros</p>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function carregarAutoresAdmin() {
+            try {
+                const tbody = document.getElementById("autores-tbody");
+                tbody.innerHTML = '<tr><td colspan="5" class="dashboard-empty-state">Carregando autores...</td></tr>';
+                
+                let data;
+                try {
+                    const res = await fetch("/admin/api/autores");
+                    if (!res.ok) throw new Error('API não disponível');
+                    data = await res.json();
+                } catch (error) {
+                    console.warn('API de autores não disponível');
+                    data = [];
+                }
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="dashboard-empty-state">
+                                <i class="fas fa-user-edit"></i>
+                                <p class="mt-2">Nenhum autor cadastrado</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+
+                data.forEach(autor => {
+                    const tr = document.createElement("tr");
+                    tr.dataset.id = autor.id;
+                    tr.innerHTML = `
+                        <td class="col-nome">${sanitizeHTML(autor.nome || 'N/A')}</td>
+                        <td class="col-nacionalidade">${sanitizeHTML(autor.nacionalidade || '-')}</td>
+                        <td class="col-data-nasc">${autor.data_nascimento ? new Date(autor.data_nascimento).toLocaleDateString('pt-BR') : '-'}</td>
+                        <td class="col-total-livros">${autor.total_livros || 0}</td>
+                        <td class="col-acoes">
+                            <button class="dashboard-btn dashboard-btn-edit me-1" onclick="editarAutor(${autor.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="dashboard-btn dashboard-btn-danger" onclick="removerAutor(${autor.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+
+                autoresCache = data;
+            } catch (err) {
+                console.error("Erro carregarAutores:", err);
+                const tbody = document.getElementById("autores-tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="dashboard-empty-state">
+                            <div style="color: #dc3545;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p class="mt-2">Erro ao carregar autores</p>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function carregarCategoriasAdmin() {
+            try {
+                const tbody = document.getElementById("categorias-tbody");
+                tbody.innerHTML = '<tr><td colspan="5" class="dashboard-empty-state">Carregando categorias...</td></tr>';
+                
+                let data;
+                try {
+                    const res = await fetch("/admin/api/categorias");
+                    if (!res.ok) {
+                        const res2 = await fetch("/api/categorias");
+                        if (!res2.ok) throw new Error('API não disponível');
+                        data = await res2.json();
+                    } else {
+                        data = await res.json();
+                    }
+                } catch (error) {
+                    console.warn('API de categorias não disponível');
+                    data = [];
+                }
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="dashboard-empty-state">
+                                <i class="fas fa-folder"></i>
+                                <p class="mt-2">Nenhuma categoria cadastrada</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+
+                data.forEach(categoria => {
+                    const tr = document.createElement("tr");
+                    tr.dataset.id = categoria.id;
+                    tr.innerHTML = `
+                        <td class="col-nome">${sanitizeHTML(categoria.nome || 'N/A')}</td>
+                        <td class="col-descricao">${sanitizeHTML(categoria.descricao || '-')}</td>
+                        <td class="col-total-livros">${categoria.total_livros || 0}</td>
+                        <td class="col-data">${new Date(categoria.criado_em || Date.now()).toLocaleDateString('pt-BR')}</td>
+                        <td class="col-acoes">
+                            <button class="dashboard-btn dashboard-btn-edit me-1" onclick="editarCategoria(${categoria.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="dashboard-btn dashboard-btn-danger" onclick="removerCategoria(${categoria.id})" ${categoria.total_livros > 0 ? 'disabled title="Não pode excluir categoria com livros"' : ''}>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+
+                categoriasCache = data;
+            } catch (err) {
+                console.error("Erro carregarCategorias:", err);
+                const tbody = document.getElementById("categorias-tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="dashboard-empty-state">
+                            <div style="color: #dc3545;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p class="mt-2">Erro ao carregar categorias</p>
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        async function carregarDadosCadastroLivro() {
+            try {
+                const selectAutor = document.getElementById('admin-id_autor');
+                const selectCategoria = document.getElementById('admin-id_categoria');
+                const selectProfessor = document.getElementById('admin-id_professor');
+                
+                // Carregar autores
+                let autores = [];
+                try {
+                    const resAutores = await fetch('/api/autores');
+                    if (resAutores.ok) {
+                        autores = await resAutores.json();
+                    }
+                } catch (error) {
+                    console.warn('Erro ao carregar autores:', error);
+                }
+                
+                selectAutor.innerHTML = '<option value="">Selecione um autor</option>';
+                autores.forEach(autor => {
+                    const option = document.createElement('option');
+                    option.value = autor.id;
+                    option.textContent = sanitizeHTML(autor.nome || `Autor #${autor.id}`);
+                    selectAutor.appendChild(option);
+                });
+                
+                // Carregar categorias (usar cache se disponível)
+                let categorias = [];
+                if (categoriasCache.length > 0) {
+                    categorias = categoriasCache;
+                } else {
+                    try {
+                        const resCategorias = await fetch('/api/categorias');
+                        if (resCategorias.ok) {
+                            categorias = await resCategorias.json();
+                            categoriasCache = categorias;
+                        }
+                    } catch (error) {
+                        console.warn('Erro ao carregar categorias:', error);
+                    }
+                }
+                
+                selectCategoria.innerHTML = '<option value="">Selecione uma categoria</option>';
+                categorias.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = sanitizeHTML(cat.nome || `Categoria #${cat.id}`);
+                    selectCategoria.appendChild(option);
+                });
+                
+                // Carregar professores
+                let professores = [];
+                if (professoresCache.length > 0) {
+                    professores = professoresCache;
+                } else {
+                    try {
+                        const resProfessores = await fetch('/admin/api/professores');
+                        if (resProfessores.ok) {
+                            professores = await resProfessores.json();
+                            professoresCache = professores;
+                        }
+                    } catch (error) {
+                        console.warn('Erro ao carregar professores:', error);
+                    }
+                }
+                
+                selectProfessor.innerHTML = '<option value="">Selecione um professor (opcional)</option>';
+                selectProfessor.innerHTML += '<option value="">Nenhum</option>';
+                professores.forEach(prof => {
+                    const option = document.createElement('option');
+                    option.value = prof.id;
+                    option.textContent = sanitizeHTML(prof.nome || `Professor #${prof.id}`);
+                    selectProfessor.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                mostrarMensagem('admin-livro-msg', 'Erro ao carregar dados para cadastro de livros', 'error');
+            }
+        }
+
+        function recarregarCategorias() {
+            carregarCategoriasAdmin();
+            carregarDadosCadastroLivro();
+            alertify.success('Categorias recarregadas!');
+        }
+
+        function mostrarMensagem(elementId, mensagem, tipo = 'success') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="dashboard-message ${tipo}">
+                    <i class="fas fa-${tipo === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    ${sanitizeHTML(mensagem)}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+
+        function setLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processando...`;
+            } else {
+                button.disabled = false;
+                if (button.id === 'professor-submit-btn') {
+                    button.innerHTML = editandoProfessorId ? `<i class="fas fa-save"></i> Atualizar Professor` : `<i class="fas fa-save"></i> Salvar Professor`;
+                } else if (button.id === 'autor-submit-btn') {
+                    button.innerHTML = editandoAutorId ? `<i class="fas fa-save"></i> Atualizar Autor` : `<i class="fas fa-save"></i> Salvar Autor`;
+                } else if (button.id === 'categoria-submit-btn') {
+                    button.innerHTML = editandoCategoriaId ? `<i class="fas fa-save"></i> Atualizar Categoria` : `<i class="fas fa-save"></i> Salvar Categoria`;
+                } else if (button.id === 'livro-submit-btn') {
+                    button.innerHTML = `<i class="fas fa-save"></i> Cadastrar Livro`;
+                }
+            }
+        }
+
+        function limparFormularioProfessor() {
+            editandoProfessorId = null;
+            document.getElementById("cadastrar-professor-form").reset();
+            document.getElementById('professor-id').value = '';
+            document.getElementById('professor-submit-btn').innerHTML = '<i class="fas fa-save"></i> Salvar Professor';
+            mostrarMensagem('professor-msg', 'Formulário limpo', 'success');
+        }
+
+        function limparFormularioAutor() {
+            editandoAutorId = null;
+            document.getElementById("cadastrar-autor-form").reset();
+            document.getElementById('autor-id').value = '';
+            mostrarMensagem('autor-msg', 'Formulário limpo', 'success');
+        }
+
+        function limparFormularioCategoria() {
+            editandoCategoriaId = null;
+            document.getElementById("cadastrar-categoria-form").reset();
+            document.getElementById('categoria-id').value = '';
+            mostrarMensagem('categoria-msg', 'Formulário limpo', 'success');
+        }
+
+        function limparFormularioLivro() {
+            document.getElementById("cadastrar-livro-form").reset();
+            mostrarMensagem('admin-livro-msg', 'Formulário limpo', 'success');
+        }
+
+        // FUNÇÕES DE EDIÇÃO/REMOÇÃO
+        async function editarUsuario(id) {
+            try {
+                const response = await fetch(`/admin/api/usuarios/${id}`);
+                if (response.ok) {
+                    const usuario = await response.json();
+                    
+                    alertify.prompt('Editar Usuário', 'Nome:', usuario.nome || '', 
+                        async function(evt, novoNome) {
+                            if (novoNome === null) return;
+                            
+                            alertify.prompt('Editar Usuário', 'Email:', usuario.email || '', 
+                                async function(evt, novoEmail) {
+                                    if (novoEmail === null) return;
+                                    
+                                    alertify.prompt('Editar Usuário', 'Número de matrícula:', usuario.numero_matricula || '', 
+                                        async function(evt, novaMatricula) {
+                                            if (novaMatricula === null) return;
+
+                                            try {
+                                                const payload = { 
+                                                    nome: novoNome, 
+                                                    email: novoEmail, 
+                                                    numero_matricula: novaMatricula 
+                                                };
+                                                const url = `/admin/api/usuarios/${id}`;
+                                                const res = await fetch(url, {
+                                                    method: "PUT",
+                                                    headers: {"Content-Type":"application/json"},
+                                                    body: JSON.stringify(payload)
+                                                });
+                                                
+                                                if(!res.ok) throw new Error('Erro ao editar usuário');
+                                                
+                                                alertify.success('Usuário atualizado com sucesso!');
+                                                await carregarUsuarios();
+                                                await carregarEstatisticas();
+                                            } catch(err) {
+                                                console.error("Erro ao editar usuário:", err);
+                                                alertify.error('Erro ao editar usuário: ' + err.message);
+                                            }
+                                        }, 
+                                        function() {
+                                            alertify.message('Edição cancelada');
+                                        }
+                                    );
+                                }, 
+                                function() {
+                                    alertify.message('Edição cancelada');
+                                }
+                            );
+                        }, 
+                        function() {
+                            alertify.message('Edição cancelada');
+                        }
+                    );
+                }
+            } catch (error) {
+                console.error('Erro ao editar usuário:', error);
+                alertify.error('Erro ao carregar dados do usuário');
+            }
+        }
+
+        async function removerUsuario(id) {
+            alertify.confirm('Remover Usuário', 'Deseja realmente remover este usuário?', 
+                async function() {
+                    try {
+                        const res = await fetch(`/admin/api/usuarios/${id}`, { 
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" }
+                        });
+                        
+                        if(!res.ok) {
+                            const errorData = await res.json();
+                            throw new Error(errorData.error || 'Erro ao remover');
+                        }
+                        
+                        alertify.success('Usuário removido com sucesso!');
+                        await carregarUsuarios();
+                        await carregarEstatisticas();
+                        
+                    } catch(err) {
+                        console.error("Erro ao remover:", err);
+                        alertify.error('Erro ao remover: ' + err.message);
+                    }
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        async function editarProfessor(id) {
+            try {
+                const response = await fetch(`/admin/api/professores/${id}`);
+                if (response.ok) {
+                    const professor = await response.json();
+                    
+                    document.getElementById('professor-id').value = professor.id;
+                    document.getElementById('professor-nome').value = professor.nome || '';
+                    document.getElementById('professor-numero_agente').value = professor.numero_agente || '';
+                    document.getElementById('professor-email').value = professor.email || '';
+                    
+                    editandoProfessorId = id;
+                    document.getElementById('professor-submit-btn').innerHTML = '<i class="fas fa-save"></i> Atualizar Professor';
+                    
+                    mostrarMensagem('professor-msg', "Editando professor - preencha os campos e clique em Salvar", 'success');
+                    openTab('professores');
+                }
+            } catch (error) {
+                console.error('Erro ao editar professor:', error);
+                alertify.error('Erro ao carregar dados do professor');
+            }
+        }
+
+        async function removerProfessor(id) {
+            alertify.confirm('Remover Professor', 'Deseja realmente remover este professor?', 
+                async function() {
+                    try {
+                        const res = await fetch(`/admin/api/professores/${id}`, { 
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" }
+                        });
+                        
+                        if(!res.ok) {
+                            const errorData = await res.json();
+                            throw new Error(errorData.error || 'Erro ao remover');
+                        }
+                        
+                        alertify.success('Professor removido com sucesso!');
+                        await carregarProfessores();
+                        await carregarEstatisticas();
+                        
+                    } catch(err) {
+                        console.error("Erro ao remover:", err);
+                        alertify.error('Erro ao remover: ' + err.message);
+                    }
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        async function removerLivroAdmin(id) {
+            alertify.confirm('Remover Livro', 'Deseja realmente remover este livro?', 
+                async function() {
+                    try {
+                        const res = await fetch(`/api/livros/${id}`, { 
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" }
+                        });
+                        
+                        if(!res.ok) {
+                            const errorData = await res.json();
+                            throw new Error(errorData.error || 'Erro ao remover');
+                        }
+                        
+                        alertify.success('Livro removido com sucesso!');
+                        await carregarLivrosAdmin();
+                        await carregarEstatisticas();
+                        
+                    } catch(err) {
+                        console.error("Erro ao remover:", err);
+                        alertify.error('Erro ao remover: ' + err.message);
+                    }
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        async function editarAutor(id) {
+            try {
+                const response = await fetch(`/api/autores/${id}`);
+                if (response.ok) {
+                    const autor = await response.json();
+                    
+                    document.getElementById('autor-id').value = autor.id;
+                    document.getElementById('autor-nome').value = autor.nome || '';
+                    document.getElementById('autor-nacionalidade').value = autor.nacionalidade || '';
+                    
+                    if(autor.data_nascimento) {
+                        const data = new Date(autor.data_nascimento);
+                        document.getElementById('autor-data_nascimento').value = data.toISOString().split('T')[0];
+                    }
+                    
+                    document.getElementById('autor-biografia').value = autor.biografia || '';
+                    
+                    editandoAutorId = id;
+                    mostrarMensagem('autor-msg', "Editando autor - preencha os campos e clique em Salvar", 'success');
+                    
+                    openTab('autores');
+                }
+            } catch (error) {
+                console.error('Erro ao editar autor:', error);
+                alertify.error('Erro ao carregar dados do autor');
+            }
+        }
+
+        async function removerAutor(id) {
+            alertify.confirm('Remover Autor', 'Deseja realmente remover este autor?', 
+                async function() {
+                    try {
+                        const res = await fetch(`/api/autores/${id}`, { 
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" }
+                        });
+                        
+                        if(!res.ok) {
+                            const errorData = await res.json();
+                            throw new Error(errorData.error || 'Erro ao remover');
+                        }
+                        
+                        alertify.success('Autor removido com sucesso!');
+                        await carregarAutoresAdmin();
+                        await carregarEstatisticas();
+                        
+                    } catch(err) {
+                        console.error("Erro ao remover:", err);
+                        alertify.error('Erro ao remover: ' + err.message);
+                    }
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        async function editarCategoria(id) {
+            try {
+                const response = await fetch(`/api/categorias/${id}`);
+                if (response.ok) {
+                    const categoria = await response.json();
+                    
+                    document.getElementById('categoria-id').value = categoria.id;
+                    document.getElementById('categoria-nome').value = categoria.nome || '';
+                    document.getElementById('categoria-descricao').value = categoria.descricao || '';
+                    
+                    editandoCategoriaId = id;
+                    mostrarMensagem('categoria-msg', "Editando categoria - preencha os campos e clique em Salvar", 'success');
+                    
+                    openTab('categorias');
+                }
+            } catch (error) {
+                console.error('Erro ao editar categoria:', error);
+                alertify.error('Erro ao carregar dados da categoria');
+            }
+        }
+
+        async function removerCategoria(id) {
+            alertify.confirm('Remover Categoria', 'Deseja realmente remover esta categoria?', 
+                async function() {
+                    try {
+                        const res = await fetch(`/api/categorias/${id}`, { 
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json" }
+                        });
+                        
+                        if(!res.ok) {
+                            const errorData = await res.json();
+                            throw new Error(errorData.error || 'Erro ao remover');
+                        }
+                        
+                        alertify.success('Categoria removida com sucesso!');
+                        await carregarCategoriasAdmin();
+                        await carregarEstatisticas();
+                        
+                    } catch(err) {
+                        console.error("Erro ao remover:", err);
+                        alertify.error('Erro ao remover: ' + err.message);
+                    }
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        // EVENT LISTENERS PARA FORMULÁRIOS
+        document.getElementById("cadastrar-professor-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    const id = data.id ? parseInt(data.id) : null;
+    const submitBtn = document.getElementById('professor-submit-btn');
+
+    try {
+        setLoading(submitBtn, true);
+        
+        // Remover o ID dos dados enviados
+        delete data.id;
+        
+        // Se senha estiver vazia, remover do payload
+        if (!data.senha || data.senha.trim() === '') {
+            delete data.senha;
+        }
+        
+        console.log('📤 Enviando dados:', data);
+        
+        // TENTAR MÚLTIPLAS ROTAS
+        const rotasParaTentar = id ? 
+            [
+                `/admin/api/professores/${id}`,
+                `/admin/editar-professor/${id}`
+            ] : 
+            [
+                '/admin/api/professores',
+                '/admin/cadastrar-professor'
+            ];
+        
+        let success = false;
+        let result;
+        
+        for (const rota of rotasParaTentar) {
+            console.log(`🔄 Tentando rota: ${rota}`);
+            
+            try {
+                const res = await fetch(rota, {
+                    method: id ? 'PUT' : 'POST',
+                    headers: {"Content-Type":"application/json"},
+                    body: JSON.stringify(data)
+                });
+                
+                const contentType = res.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    result = await res.json();
+                    
+                    if (res.ok) {
+                        console.log(`✅ Sucesso na rota: ${rota}`, result);
+                        success = true;
+                        break;
+                    } else {
+                        console.log(`⚠️ Erro na rota ${rota}:`, result.error);
+                    }
+                } else {
+                    console.log(`⚠️ Resposta não é JSON na rota ${rota}`);
+                }
+            } catch (rotaError) {
+                console.log(`❌ Falha na rota ${rota}:`, rotaError.message);
+            }
+        }
+        
+        if (success) {
+            alertify.success('Professor salvo com sucesso!');
+            mostrarMensagem('professor-msg', 'Professor salvo com sucesso!', 'success');
+            limparFormularioProfessor();
+            form.reset();
+            await carregarProfessores();
+            await carregarEstatisticas();
+        } else {
+            throw new Error('Todas as rotas falharam. Verifique se o servidor está configurado.');
+        }
+        
+    } catch(err) {
+        console.error("❌ Erro no formulário professor:", err);
+        mostrarMensagem('professor-msg', err.message, 'error');
+        alertify.error('Erro: ' + err.message);
+    } finally {
+        setLoading(submitBtn, false);
+    }
+});
+
+        document.getElementById("cadastrar-categoria-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const id = data.id;
+            const submitBtn = document.getElementById('categoria-submit-btn');
+
+            try {
+                setLoading(submitBtn, true);
+                
+                if (!data.nome || data.nome.trim() === '') {
+                    throw new Error('O nome da categoria é obrigatório');
+                }
+                
+                let url, method;
+                if (id) {
+                    url = `/api/categorias/${id}`;
+                    method = "PUT";
+                } else {
+                    url = "/api/categorias";
+                    method = "POST";
+                }
+                
+                const res = await fetch(url, {
+                    method,
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        nome: data.nome.trim(),
+                        descricao: data.descricao ? data.descricao.trim() : ''
+                    })
+                });
+                
+                const result = await res.json();
+                
+                if (res.ok) {
+                    const mensagem = `Categoria ${id ? 'atualizada' : 'cadastrada'} com sucesso!`;
+                    alertify.success(mensagem);
+                    mostrarMensagem('categoria-msg', mensagem, 'success');
+                    limparFormularioCategoria();
+                    form.reset();
+                    await carregarCategoriasAdmin();
+                    await carregarEstatisticas();
+                } else {
+                    throw new Error(result.error || `Erro ao ${id ? 'atualizar' : 'cadastrar'} categoria`);
+                }
+                
+            } catch(err) {
+                console.error("Erro no formulário categoria:", err);
+                mostrarMensagem('categoria-msg', err.message || 'Erro ao salvar categoria', 'error');
+                alertify.error('Erro: ' + err.message);
+            } finally {
+                setLoading(submitBtn, false);
+            }
+        });
+
+        document.getElementById("cadastrar-livro-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const submitBtn = document.getElementById('livro-submit-btn');
+
+            try {
+                setLoading(submitBtn, true);
+                
+                const res = await fetch('/api/livros', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                // Verificar se é JSON
+                const contentType = res.headers.get('content-type');
+                let result;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    result = await res.json();
+                } else {
+                    const text = await res.text();
+                    console.error('Resposta não é JSON:', text);
+                    throw new Error(`Erro no servidor: ${text.substring(0, 100)}`);
+                }
+                
+                if (res.ok) {
+                    alertify.success('Livro cadastrado com sucesso!');
+                    mostrarMensagem('admin-livro-msg', 'Livro cadastrado com sucesso!', 'success');
+                    
+                    e.target.reset();
+                    await carregarLivrosAdmin();
+                    await carregarEstatisticas();
+                    openTab('livros');
+                } else {
+                    throw new Error(result.error || result.message || 'Erro ao salvar livro');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar livro:', error);
+                let errorMsg = error.message;
+                
+                if (error.message.includes('Unexpected token') || error.message.includes('JSON')) {
+                    errorMsg = 'Erro no servidor. Tente novamente.';
+                }
+                
+                mostrarMensagem('admin-livro-msg', errorMsg, 'error');
+                alertify.error('Erro: ' + errorMsg);
+            } finally {
+                setLoading(submitBtn, false);
+            }
+        });
+
+        function redefinirSenha() {
+            alertify.prompt('Redefinir Senha', 'Digite o email do usuário:', '', 
+                function(evt, email) {
+                    if (!email) return;
+                    
+                    alertify.confirm('Redefinir Senha', 
+                        `Deseja redefinir a senha para o usuário <strong>${sanitizeHTML(email)}</strong>?`, 
+                        function() {
+                            fetch('/api/redefinir-senha', {
+                                method: 'POST',
+                                headers: {"Content-Type":"application/json"},
+                                body: JSON.stringify({ email: email })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alertify.success(`Senha redefinida para ${sanitizeHTML(email)}`);
+                                    alertify.alert('Nova Senha', `A nova senha é: <strong>${data.novaSenha}</strong><br><br>Compartilhe esta senha com o usuário.`);
+                                } else {
+                                    alertify.error('Erro ao redefinir senha');
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Erro:', err);
+                                alertify.error('Erro ao redefinir senha');
+                            });
+                        }, 
+                        function() {
+                            alertify.message('Operação cancelada');
+                        }
+                    );
+                }, 
+                function() {
+                    alertify.message('Operação cancelada');
+                }
+            );
+        }
+
+        function mostrarSobre() {
+            alertify.alert('Sobre o Sistema', `
+                <div class="text-center p-2">
+                    <h4 class="fw-bold mb-2" style="color: #2E7D32;">Biblioteca Virtual ISPP-LUENA</h4>
+                    <p class="small mb-1"><strong>Versão:</strong> 2.4.0 (Painel Administrativo)</p>
+                    <p class="small mb-1"><strong>Última atualização:</strong> Janeiro 2024</p>
+                    <p class="small mb-0">Sistema desenvolvido para gestão administrativa da biblioteca virtual da instituição.</p>
+                </div>
+            `);
+        }
+
+        function mostrarContato() {
+            alertify.alert('Contato', `
+                <div class="p-2">
+                    <h4 class="fw-bold mb-2" style="color: #2E7D32;">Suporte Administrativo</h4>
+                    <p class="small mb-1"><i class="fas fa-envelope me-1"></i> <strong>Email:</strong> admin@ispp.co.ao</p>
+                    <p class="small mb-1"><i class="fas fa-phone me-1"></i> <strong>Telefone:</strong> +244 XXX XX XX XX</p>
+                    <p class="small mb-0"><i class="fas fa-clock me-1"></i> <strong>Horário:</strong> Seg-Sex, 8h-17h</p>
+                </div>
+            `);
+        }
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Iniciando Painel Administrativo...');
+            await carregarUserInfo();
+            await carregarDashboard();
+            
+            await carregarCategoriasAdmin();
+            await carregarAutoresAdmin();
+            await carregarProfessores();
+            
+            setTimeout(() => {
+                alertify.success('Painel Administrativo carregado com sucesso!');
+            }, 800);
+        });
+    </script>
+   <!-- Fim do body -->
+<div id="console" style="background:#222;color:#0f0;font-family:monospace;padding:10px;height:200px;overflow:auto;"></div>
+<script>
+(function(){
+    const consoleDiv = document.getElementById('console');
+
+    function logToDiv(msg, type='log') {
+        const p = document.createElement('div');
+        p.textContent = `[${type}] ${msg}`;
+        p.style.color = type === 'error' ? 'red' : '#0f0';
+        consoleDiv.appendChild(p);
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+
+    const oldLog = console.log;
+    const oldWarn = console.warn;
+    const oldError = console.error;
+
+    console.log = function(...args){ oldLog.apply(console, args); logToDiv(args.join(' '), 'log'); };
+    console.warn = function(...args){ oldWarn.apply(console, args); logToDiv(args.join(' '), 'warn'); };
+    console.error = function(...args){ oldError.apply(console, args); logToDiv(args.join(' '), 'error'); };
+
+    window.addEventListener('error', function(e){
+        logToDiv(e.message + ' (' + e.filename + ':' + e.lineno + ')', 'error');
+    });
+})();
+</Script>
+
+</body>
+</html>

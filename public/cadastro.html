@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Biblioteca Virtual</title>
+    
+    <!-- Bootstrap e Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <style>
+        /* VARIÁVEIS DE CORES COMPACTADAS */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --card-glass-bg: rgba(255, 255, 255, 0.95);
+            --header-glass-bg: rgba(46, 125, 50, 0.95);
+        }
+
+        body {
+            background: linear-gradient(135deg, 
+                rgba(46, 125, 50, 0.03) 0%, 
+                rgba(76, 175, 80, 0.06) 25%, 
+                rgba(255, 213, 79, 0.08) 75%, 
+                rgba(255, 193, 7, 0.03) 100%),
+                url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CONTAINER DE CADASTRO COM DESIGN DE VIDRO */
+        .cadastro-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-glass-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.15),
+                0 2px 5px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cadastro-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.2),
+                0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* LOGO - ALINHADO COM AS OUTRAS PÁGINAS */
+        .cadastro-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            text-align: center;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-subtitle {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* CABEÇALHO DO CADASTRO */
+        .cadastro-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cadastro-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .cadastro-header p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* FORMULÁRIO */
+        .cadastro-form {
+            margin-bottom: 2rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-floating .form-control,
+        .form-floating .form-select {
+            background: var(--color-white);
+            border: 1.5px solid var(--color-border);
+            border-radius: 10px;
+            padding: 1rem 1rem 1rem 2.5rem;
+            height: calc(3.5rem + 2px);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-floating .form-control:focus,
+        .form-floating .form-select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+        }
+
+        .form-floating label {
+            padding-left: 2.5rem;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232E7D32' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-primary);
+            z-index: 4;
+            font-size: 1rem;
+        }
+
+        /* ROTULOS REQUERIDOS */
+        .required-label::after {
+            content: " *";
+            color: var(--color-danger);
+            font-weight: bold;
+        }
+
+        /* AJUDAS E PEQUENOS TEXTOS */
+        .form-text-help {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+            margin-left: 2.5rem;
+            display: block;
+        }
+
+        .form-text-help.required {
+            color: var(--color-danger);
+        }
+
+        /* BOTÃO DE CADASTRO - ALINHADO COM AS OUTRAS PÁGINAS */
+        .cadastro-btn {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .cadastro-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        .cadastro-btn:active {
+            transform: translateY(0);
+        }
+
+        .cadastro-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* LINKS */
+        .cadastro-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .cadastro-links a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .cadastro-links a:hover {
+            color: var(--color-primary-light);
+            text-decoration: underline;
+        }
+
+        /* MENSAGENS */
+        #message {
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.error {
+            background: linear-gradient(180deg,#fff2f2,#ffe6e6);
+            color: #9a2b2b;
+            border: 1px solid #f5c7c7;
+        }
+
+        .message.success {
+            background: linear-gradient(180deg,#f0fff2,#e8ffea);
+            color: #2b7a32;
+            border: 1px solid #c8e6c9;
+        }
+
+        /* FOOTER DO CADASTRO */
+        .cadastro-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            line-height: 1.4;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* DECORAÇÃO */
+        .decorative-circle {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                rgba(46, 125, 50, 0.1), 
+                rgba(255, 213, 79, 0.1));
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .circle-1 { 
+            top: -40px; 
+            right: -40px; 
+        }
+
+        .circle-2 { 
+            bottom: -40px; 
+            left: -40px; 
+        }
+
+        /* VALIDAÇÃO VISUAL */
+        .valid-input {
+            border-color: var(--color-primary) !important;
+            background-color: rgba(46, 125, 50, 0.05) !important;
+        }
+
+        .invalid-input {
+            border-color: var(--color-danger) !important;
+            background-color: rgba(231, 76, 60, 0.05) !important;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                background-attachment: scroll;
+            }
+            
+            .cadastro-container {
+                max-width: 420px;
+                padding: 2rem;
+                border-radius: 15px;
+            }
+            
+            .logo-img {
+                height: 50px;
+            }
+            
+            .logo-title {
+                font-size: 1.3rem;
+            }
+            
+            .cadastro-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .form-floating .form-control,
+            .form-floating .form-select {
+                height: calc(3rem + 2px);
+                font-size: 0.85rem;
+            }
+            
+            .cadastro-btn {
+                padding: 0.65rem 1.25rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cadastro-container {
+                max-width: 100%;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            .logo-img {
+                height: 45px;
+            }
+            
+            .logo-title {
+                font-size: 1.2rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .cadastro-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .cadastro-header p {
+                font-size: 0.85rem;
+            }
+            
+            .cadastro-links a {
+                font-size: 0.8rem;
+            }
+            
+            .decorative-circle {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .circle-1 { 
+                top: -20px; 
+                right: -20px; 
+            }
+            
+            .circle-2 { 
+                bottom: -20px; 
+                left: -20px; 
+            }
+            
+            .form-text-help {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* SCROLLBAR FINA */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(46, 125, 50, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Círculos decorativos -->
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
+    
+    <div class="cadastro-container">
+        <!-- Logo -->
+        <div class="cadastro-logo">
+            <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+            <div class="logo-text">
+                <div class="logo-title">ISPP-LUENA</div>
+                <div class="logo-subtitle">Biblioteca Virtual</div>
+            </div>
+        </div>
+        
+        <!-- Cabeçalho -->
+        <div class="cadastro-header">
+            <h2>Junte-se a nós</h2>
+            <p>Crie sua conta e tenha acesso a milhares de livros e recursos educacionais</p>
+        </div>
+        
+        <!-- Mensagem de erro/sucesso -->
+        <div id="message" style="display: none;"></div>
+        
+        <!-- Formulário de Cadastro -->
+        <form id="formCadastro" class="cadastro-form">
+            <!-- Tipo de Usuário -->
+            <div class="form-floating">
+                <i class="fas fa-user-tag input-icon"></i>
+                <select class="form-select" id="tipo" name="tipo" required>
+                    <option value="">Selecione o tipo de conta</option>
+                    <option value="estudante">📚 Estudante</option>
+                    <option value="visitante">👥 Visitante</option>
+                </select>
+                <label for="tipo" class="required-label">Tipo de Usuário</label>
+            </div>
+            
+            <!-- Nome Completo -->
+            <div class="form-floating">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" class="form-control" id="nome" name="nome" 
+                       placeholder="Nome Completo" required>
+                <label for="nome" class="required-label">Nome Completo</label>
+            </div>
+            
+            <!-- Número de Matrícula -->
+            <div class="form-floating">
+                <i class="fas fa-id-card input-icon"></i>
+                <input type="text" class="form-control" id="numero_matricula" name="numero_matricula" 
+                       placeholder="Número de Matrícula">
+                <label for="numero_matricula">Número de Matrícula</label>
+                <span class="form-text-help" id="matriculaHelp">Obrigatório apenas para estudantes</span>
+            </div>
+            
+            <!-- E-mail -->
+            <div class="form-floating">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" class="form-control" id="email" name="email" 
+                       placeholder="name@example.com" required>
+                <label for="email" class="required-label">E-mail</label>
+                <span class="form-text-help">Utilize um e-mail válido</span>
+            </div>
+            
+            <!-- Senha -->
+            <div class="form-floating">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" class="form-control" id="senha" name="senha" 
+                       placeholder="Senha" required minlength="8">
+                <label for="senha" class="required-label">Senha</label>
+                <span class="form-text-help">Mínimo de 8 caracteres com letras e números</span>
+            </div>
+            
+            <button type="submit" class="cadastro-btn">
+                <i class="fas fa-user-plus"></i> CRIAR CONTA GRATUITA
+            </button>
+            
+            <!-- Links -->
+            <div class="cadastro-links">
+                <a href="/auth/login">
+                    <i class="fas fa-sign-in-alt"></i> Já tem uma conta? Faça login
+                </a>
+                <a href="/">
+                    <i class="fas fa-home"></i> Voltar para a página inicial
+                </a>
+            </div>
+        </form>
+        
+        <!-- Footer -->
+        <div class="cadastro-footer">
+            <p class="mb-0">© 2024 Biblioteca Virtual ISPP-LUENA • Ao criar uma conta, você concorda com nossos Termos de Uso e Política de Privacidade.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
+    <script>
+        // Configuração do Alertify
+        alertify.defaults.glossary.title = 'Biblioteca Virtual';
+        alertify.defaults.notifier.position = 'top-right';
+        alertify.defaults.transition = 'fade';
+
+        // Elementos DOM
+        const tipoSelect = document.getElementById("tipo");
+        const matriculaInput = document.getElementById("numero_matricula");
+        const matriculaHelp = document.getElementById("matriculaHelp");
+        const emailInput = document.getElementById("email");
+        const senhaInput = document.getElementById("senha");
+
+        // Controle do campo de matrícula baseado no tipo de usuário
+        tipoSelect.addEventListener("change", function() {
+            if (this.value === "estudante") {
+                matriculaInput.required = true;
+                matriculaInput.classList.add("is-required");
+                matriculaHelp.textContent = "Este campo é obrigatório para estudantes";
+                matriculaHelp.classList.add("required");
+            } else {
+                matriculaInput.required = false;
+                matriculaInput.classList.remove("is-required");
+                matriculaHelp.textContent = "Opcional para visitantes";
+                matriculaHelp.classList.remove("required");
+            }
+        });
+
+        // Validação em tempo real da senha
+        senhaInput.addEventListener('input', function() {
+            const senha = this.value;
+            const isValid = senha.length >= 8 && /[A-Za-z]/.test(senha) && /\d/.test(senha);
+            
+            if (senha.length > 0) {
+                if (isValid) {
+                    this.classList.remove('invalid-input');
+                    this.classList.add('valid-input');
+                } else {
+                    this.classList.remove('valid-input');
+                    this.classList.add('invalid-input');
+                }
+            } else {
+                this.classList.remove('valid-input', 'invalid-input');
+            }
+        });
+
+        // Validação de email
+        emailInput.addEventListener('blur', function() {
+            const email = this.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email && emailRegex.test(email)) {
+                this.classList.remove('invalid-input');
+                this.classList.add('valid-input');
+            } else if (email) {
+                this.classList.remove('valid-input');
+                this.classList.add('invalid-input');
+            } else {
+                this.classList.remove('valid-input', 'invalid-input');
+            }
+        });
+
+        // Form submission com AJAX
+        document.getElementById('formCadastro').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validação de senha
+            const senha = senhaInput.value;
+            if (senha.length < 8 || !/[A-Za-z]/.test(senha) || !/\d/.test(senha)) {
+                alertify.error('A senha deve ter pelo menos 8 caracteres, incluindo letras e números.');
+                senhaInput.classList.add('invalid-input');
+                senhaInput.focus();
+                return;
+            }
+            
+            // Validação de email
+            const email = emailInput.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alertify.error('Por favor, insira um e-mail válido.');
+                emailInput.classList.add('invalid-input');
+                emailInput.focus();
+                return;
+            }
+            
+            // Validação de tipo de usuário
+            if (!tipoSelect.value) {
+                alertify.error('Por favor, selecione o tipo de usuário.');
+                tipoSelect.focus();
+                return;
+            }
+            
+            // Validação de matrícula para estudantes
+            if (tipoSelect.value === "estudante" && !matriculaInput.value.trim()) {
+                alertify.error('Número de matrícula é obrigatório para estudantes.');
+                matriculaInput.classList.add('invalid-input');
+                matriculaInput.focus();
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const data = {
+                nome: formData.get('nome'),
+                email: formData.get('email'),
+                senha: formData.get('senha'),
+                tipo: formData.get('tipo'),
+                numero_matricula: formData.get('numero_matricula')
+            };
+
+            const messageDiv = document.getElementById('message');
+            const submitBtn = this.querySelector('.cadastro-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Mostrar estado de carregamento
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CRIANDO CONTA...';
+            submitBtn.disabled = true;
+            
+            // Efeito visual durante envio
+            this.style.transform = 'scale(0.99)';
+            
+            try {
+                const response = await fetch('/auth/cadastro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.style.display = 'block';
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = '✓ ' + (result.message || 'Cadastro realizado com sucesso!');
+                    
+                    // Efeito visual de confirmação
+                    document.querySelector('.cadastro-container').style.animation = 'pulse 0.5s';
+                    
+                    // Notificação com alertify
+                    alertify.success('Cadastro realizado com sucesso!');
+                    
+                    // Redirecionar para login após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = '/auth/login?message=' + 
+                            encodeURIComponent('Cadastro realizado com sucesso! Faça login para acessar sua conta.') + 
+                            '&type=success';
+                    }, 2000);
+                } else {
+                    messageDiv.style.display = 'block';
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = '✗ ' + (result.error || 'Erro ao realizar cadastro. Tente novamente.');
+                    
+                    // Efeito de shake no erro
+                    this.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 500);
+                    
+                    // Notificação com alertify
+                    alertify.error(result.error || 'Erro ao realizar cadastro.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                messageDiv.style.display = 'block';
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '✗ Erro de conexão. Verifique sua internet e tente novamente.';
+                alertify.error('Erro de conexão com o servidor.');
+            } finally {
+                // Restaurar botão
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                this.style.transform = 'scale(1)';
+            }
+        });
+
+        // Mostrar mensagem da URL se existir
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        const messageType = urlParams.get('type');
+        
+        if (message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.className = `message ${messageType || 'success'}`;
+            messageDiv.textContent = decodeURIComponent(message);
+            
+            // Mostrar também com alertify
+            if (messageType === 'error') {
+                alertify.error(decodeURIComponent(message));
+            } else if (messageType === 'success') {
+                alertify.success(decodeURIComponent(message));
+            }
+        }
+
+        // Foco automático no primeiro campo
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('nome').focus();
+            
+            // Mensagem de boas-vindas
+            setTimeout(() => {
+                alertify.message('Crie sua conta para acessar a biblioteca');
+            }, 500);
+        });
+
+        // Habilitar submit com Enter
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.activeElement.type !== 'button') {
+                document.querySelector('.cadastro-btn').click();
+            }
+        });
+
+        // Adicionar animações CSS se não existirem
+        if (!document.querySelector('style[data-animations]')) {
+            const style = document.createElement('style');
+            style.setAttribute('data-animations', 'true');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.02); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - Biblioteca Virtual</title>
+    
+    <!-- Bootstrap e Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <style>
+        /* VARIÁVEIS DE CORES COMPACTADAS */
+        :root {
+            --color-primary: #2E7D32;
+            --color-primary-light: #4CAF50;
+            --color-secondary: #FFD54F;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-info: #1abc9c;
+            --color-text-main: #2c3e50;
+            --color-text-secondary: #6c757d;
+            --color-white: #ffffff;
+            --color-light-gray: #f8f9fa;
+            --color-border: #dee2e6;
+            --card-glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            background: linear-gradient(135deg, 
+                rgba(46, 125, 50, 0.03) 0%, 
+                rgba(76, 175, 80, 0.06) 25%, 
+                rgba(255, 213, 79, 0.08) 75%, 
+                rgba(255, 193, 7, 0.03) 100%),
+                url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--color-text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CONTAINER DE RECUPERAÇÃO COM DESIGN DE VIDRO */
+        .recovery-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-glass-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.15),
+                0 2px 5px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .recovery-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.2),
+                0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* LOGO - ALINHADO COM AS OUTRAS PÁGINAS */
+        .recovery-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            text-align: center;
+        }
+
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-subtitle {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* ÍCONE DE CHAVE PRINCIPAL */
+        .key-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .key-icon i {
+            font-size: 3rem;
+            color: var(--color-primary);
+            background: linear-gradient(135deg, 
+                rgba(46, 125, 50, 0.1), 
+                rgba(76, 175, 80, 0.1));
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border: 2px solid rgba(46, 125, 50, 0.2);
+        }
+
+        /* CABEÇALHO DA RECUPERAÇÃO */
+        .recovery-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .recovery-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .recovery-header p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            line-height: 1.4;
+        }
+
+        /* FORMULÁRIO */
+        .recovery-form {
+            margin-bottom: 2rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-floating .form-control {
+            background: var(--color-white);
+            border: 1.5px solid var(--color-border);
+            border-radius: 10px;
+            padding: 1rem 1rem 1rem 2.5rem;
+            height: calc(3.5rem + 2px);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-floating .form-control:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+        }
+
+        .form-floating label {
+            padding-left: 2.5rem;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-primary);
+            z-index: 4;
+            font-size: 1rem;
+        }
+
+        /* BOTÃO DE ENVIO - ALINHADO COM AS OUTRAS PÁGINAS */
+        .recovery-btn {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .recovery-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        .recovery-btn:active {
+            transform: translateY(0);
+        }
+
+        .recovery-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* MENSAGENS */
+        #message-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .message {
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: left;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .message.success {
+            background: linear-gradient(180deg,#f0fff2,#e8ffea);
+            color: #2b7a32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .message.error {
+            background: linear-gradient(180deg,#fff2f2,#ffe6e6);
+            color: #9a2b2b;
+            border: 1px solid #f5c7c7;
+        }
+
+        .message.info {
+            background: linear-gradient(180deg,#e8f4f8,#d4edf5);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .message i {
+            font-size: 1.1rem;
+            margin-top: 0.1rem;
+        }
+
+        /* LINKS */
+        .recovery-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .recovery-links a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .recovery-links a:hover {
+            color: var(--color-primary-light);
+            text-decoration: underline;
+        }
+
+        /* INFORMAÇÃO DE DESENVOLVIMENTO */
+        .dev-info {
+            background: var(--color-light-gray);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            border: 1px dashed var(--color-primary);
+            display: none;
+        }
+
+        .dev-info.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .dev-info h4 {
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dev-info a {
+            word-break: break-all;
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+            border: 1px solid var(--color-border);
+        }
+
+        .dev-info a:hover {
+            text-decoration: underline;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .dev-info .note {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* FOOTER DA RECUPERAÇÃO */
+        .recovery-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* DECORAÇÃO */
+        .decorative-circle {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                rgba(46, 125, 50, 0.1), 
+                rgba(255, 213, 79, 0.1));
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .circle-1 { 
+            top: -40px; 
+            right: -40px; 
+        }
+
+        .circle-2 { 
+            bottom: -40px; 
+            left: -40px; 
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                background-attachment: scroll;
+            }
+            
+            .recovery-container {
+                max-width: 420px;
+                padding: 2rem;
+                border-radius: 15px;
+            }
+            
+            .logo-img {
+                height: 50px;
+            }
+            
+            .logo-title {
+                font-size: 1.3rem;
+            }
+            
+            .recovery-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .key-icon i {
+                font-size: 2.5rem;
+                width: 70px;
+                height: 70px;
+            }
+            
+            .form-floating .form-control {
+                height: calc(3rem + 2px);
+                font-size: 0.85rem;
+            }
+            
+            .recovery-btn {
+                padding: 0.65rem 1.25rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recovery-container {
+                max-width: 100%;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            .logo-img {
+                height: 45px;
+            }
+            
+            .logo-title {
+                font-size: 1.2rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .recovery-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .recovery-header p {
+                font-size: 0.85rem;
+            }
+            
+            .key-icon i {
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .recovery-links a {
+                font-size: 0.8rem;
+            }
+            
+            .decorative-circle {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .circle-1 { 
+                top: -20px; 
+                right: -20px; 
+            }
+            
+            .circle-2 { 
+                bottom: -20px; 
+                left: -20px; 
+            }
+        }
+
+        /* SCROLLBAR FINA */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(46, 125, 50, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Círculos decorativos -->
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
+    
+    <div class="recovery-container">
+        <!-- Logo -->
+        <div class="recovery-logo">
+            <img src="/img/descarregar.png" alt="ISPP Luena" class="logo-img">
+            <div class="logo-text">
+                <div class="logo-title">ISPP-LUENA</div>
+                <div class="logo-subtitle">Biblioteca Virtual</div>
+            </div>
+        </div>
+        
+        <!-- Ícone de chave -->
+        <div class="key-icon">
+            <i class="fas fa-key"></i>
+        </div>
+        
+        <!-- Cabeçalho -->
+        <div class="recovery-header">
+            <h2>Recuperar Senha</h2>
+            <p>Digite seu e-mail cadastrado para receber instruções de recuperação de senha.</p>
+        </div>
+        
+        <!-- Container de mensagens -->
+        <div id="message-container"></div>
+        
+        <!-- Formulário de Recuperação -->
+        <form id="recovery-form" class="recovery-form">
+            <div class="form-floating">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" class="form-control" id="email" name="email" 
+                       placeholder="name@example.com" required>
+                <label for="email">E-mail cadastrado</label>
+            </div>
+            
+            <button type="submit" class="recovery-btn" id="submit-btn">
+                <i class="fas fa-paper-plane"></i> Enviar Instruções
+            </button>
+        </form>
+        
+        <!-- Links -->
+        <div class="recovery-links">
+            <a href="/auth/login">
+                <i class="fas fa-arrow-left"></i> Voltar para o Login
+            </a>
+            <a href="/">
+                <i class="fas fa-home"></i> Voltar para a Página Inicial
+            </a>
+        </div>
+        
+        <!-- Informação de desenvolvimento -->
+        <div class="dev-info" id="dev-info">
+            <h4><i class="fas fa-code"></i> Informação de Desenvolvimento</h4>
+            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;">Link de recuperação (para testes):</p>
+            <a id="dev-link" href="#" target="_blank"></a>
+            <div class="note">
+                <i class="fas fa-info-circle"></i>
+                <span>Em produção, este link seria enviado por e-mail.</span>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="recovery-footer">
+            <p class="mb-0">© 2024 Biblioteca Virtual ISPP-LUENA • Sistema de recuperação de senha</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
+    <script>
+        // Configuração do Alertify
+        alertify.defaults.glossary.title = 'Recuperação de Senha';
+        alertify.defaults.notifier.position = 'top-right';
+        alertify.defaults.transition = 'fade';
+
+        // Elementos DOM
+        const form = document.getElementById('recovery-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const messageContainer = document.getElementById('message-container');
+        const devInfo = document.getElementById('dev-info');
+        const devLink = document.getElementById('dev-link');
+        const emailInput = document.getElementById('email');
+
+        // Mostrar mensagem no container
+        function showMessage(text, type = 'info') {
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 'info-circle';
+            
+            messageContainer.innerHTML = `
+                <div class="message ${type}">
+                    <i class="fas fa-${icon}"></i>
+                    <span>${text}</span>
+                </div>
+            `;
+        }
+
+        // Controlar estado de carregamento
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            if (loading) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Instruções';
+            }
+        }
+
+        // Validação de e-mail
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Envio do formulário
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            // Validação básica
+            if (!email) {
+                showMessage('Por favor, digite seu e-mail', 'error');
+                emailInput.classList.add('is-invalid');
+                emailInput.focus();
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showMessage('Por favor, digite um e-mail válido', 'error');
+                emailInput.classList.add('is-invalid');
+                emailInput.focus();
+                return;
+            }
+            
+            // Remover estado de erro se existir
+            emailInput.classList.remove('is-invalid');
+            
+            setLoading(true);
+            showMessage('Processando sua solicitação...', 'info');
+            
+            try {
+                const response = await fetch('/recuperar-senha/solicitar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message || 'Instruções enviadas com sucesso! Verifique seu e-mail.', 'success');
+                    
+                    // Notificação com alertify
+                    alertify.success('E-mail de recuperação enviado com sucesso!');
+                    
+                    // Em desenvolvimento, mostrar o link
+                    if (data.link) {
+                        devInfo.classList.add('show');
+                        devLink.href = data.link;
+                        devLink.textContent = data.link;
+                        devLink.onclick = (e) => {
+                            e.preventDefault();
+                            window.open(data.link, '_blank');
+                        };
+                    }
+                    
+                    // Limpar formulário
+                    form.reset();
+                    
+                    // Rolar para mostrar a mensagem de sucesso
+                    messageContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    showMessage(data.error || 'Erro ao processar sua solicitação. Tente novamente.', 'error');
+                    alertify.error(data.error || 'Erro ao enviar e-mail de recuperação');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showMessage('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+                alertify.error('Erro de conexão com o servidor');
+            } finally {
+                setLoading(false);
+            }
+        });
+        
+        // Verificar se há mensagem de erro na URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const erro = urlParams.get('erro');
+        
+        if (erro === 'token-invalido') {
+            showMessage('Link de recuperação inválido ou expirado. Solicite um novo.', 'error');
+            alertify.error('Link de recuperação inválido. Por favor, solicite um novo.');
+        }
+
+        // Foco automático no campo de e-mail
+        document.addEventListener('DOMContentLoaded', function() {
+            emailInput.focus();
+            
+            // Mensagem de orientação
+            setTimeout(() => {
+                alertify.message('Digite seu e-mail para recuperar a senha');
+            }, 500);
+        });
+
+        // Habilitar submit com Enter
+        emailInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !submitBtn.disabled) {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Validação em tempo real do e-mail
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            if (email && validateEmail(email)) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else if (email) {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-valid', 'is-invalid');
+            }
+        });
+
+        // Adicionar animações CSS se não existirem
+        if (!document.querySelector('style[data-animations]')) {
+            const style = document.createElement('style');
+            style.setAttribute('data-animations', 'true');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes slideIn {
+                    from { opacity: 0; transform: translateX(-20px); }
+                    to { opacity: 1; transform: translateX(0); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

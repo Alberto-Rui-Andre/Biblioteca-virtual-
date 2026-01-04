@@ -1,0 +1,27 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculo da média</title>
+ </head>
+ <body>
+    <h1>exercício prático - cálculo da média</h1>
+    <p>clica no botão para calcular a média</p>
+    <button onclick="calcularMedia()">calcular média</button>
+    <script>
+        
+        function calcularMedia() {
+            let nomeAluno = "dalmacia";
+            let nota1 = 7
+            let nota2 = 8
+            let nota3 = 9
+            let media = (nota1 + nota2 + nota3) / 3;
+            alert("Nome: " + nomeAluno + "\n" +
+            "Nota 1: " + nota1 + "\n" +
+            "Nota 2: " + nota2 + "\n" +
+            "Nota 3: " + nota3 + "\n" +
+            "Média: " + media.toFixed(2));
+        }    
+ </body>
+ </html>
