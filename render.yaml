@@ -1,0 +1,15 @@
+
+services:
+  - type: web
+    name: biblioteca-app
+    env: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        value: postgresql://biblioteca_virtual_rrch_user:m0cE4X1rHlYLHKAAaFh4esz9se3ucLFb@dpg-d4vvnoi4d50c738accfg-a:5432/biblioteca_virtual_rrch
