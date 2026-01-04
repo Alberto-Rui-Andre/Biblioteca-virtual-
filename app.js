@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const { Pool } = require('pg'); // <- ADIÇÃO 1: PostgreSQL
 const os = require('os');
 const multer = require('multer');
 const fs = require('fs');
@@ -23,13 +24,19 @@ function getLocalIP() {
     return 'localhost';
 }
 
-// Configuração do banco de dados
+// Configuração do banco de dados MySQL (LOCAL)
 const dbConfig = {
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'biblioteca_virtual'
 };
+
+// ADIÇÃO 2: Configuração PostgreSQL (RENDER)
+const poolPostgres = new Pool({
+    connectionString: process.env.DATABASE_URL || 'postgresql://localhost/biblioteca',
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
 
 // Middlewares
 app.use(express.json());
@@ -103,11 +110,24 @@ app.use(session({
     }
 }));
 
-// Database middleware
+// ADIÇÃO 3: Database middleware ATUALIZADO
 app.use(async (req, res, next) => {
     try {
-        const connection = await mysql.createConnection(dbConfig);
-        req.db = connection;
+        // Tenta usar PostgreSQL (Render)
+        if (process.env.DATABASE_URL) {
+            const client = await poolPostgres.connect();
+            req.db = {
+                execute: (sql, params) => client.query(sql, params),
+                end: () => client.release()
+            };
+        } else {
+            // Fallback para MySQL local
+            const connection = await mysql.createConnection(dbConfig);
+            req.db = {
+                execute: (sql, params) => connection.execute(sql, params),
+                end: () => connection.end()
+            };
+        }
         next();
     } catch (error) {
         console.error('Erro na conexão com o banco:', error);
